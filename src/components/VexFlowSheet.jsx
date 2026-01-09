@@ -25,43 +25,30 @@ export default function VexFlowSheet() {
     var targetName = "B Major";
 
     const foundScale = scales.find((scale) => scale.name === targetName);
-    const foundNotes = foundScale.notes;
-    console.log(foundNotes);
     let key = foundScale.key;
     //key = "C";
-    let accidentals = [];
+    const foundNotes = [...foundScale.notes]; // clone
+      console.log(foundNotes);
+    const accidentals = [];
 
-    foundNotes.map((note, i) => {
-      console.log("octaveIndex: ", octaveIndex);
-      const secondChar = note[1];
-      console.log(secondChar);
-      if (secondChar == undefined) {
-        accidentals[i] = "";
-      } else {
-        accidentals[i] = secondChar;
-      }
+    foundNotes.forEach((note, i) => {
+      // Remove any existing octave (defensive)
+      const baseNote = note.split("/")[0];
 
+      // Accidental
+      accidentals[i] = baseNote[1] ?? "";
+
+      // Octave logic
       if (clef === "treble") {
-        if (octaveIndex < 2) {
-          octaveIndex = 2;
-        }
-        if (note[0] === "c") {
-          octaveIndex += 1;
-        }
-        foundNotes[i] = foundNotes[i] + "/" + octave[octaveIndex];
-        console.log("Updated input: ", foundNotes[i]);
+        if (octaveIndex < 2) octaveIndex = 2;
+        if (baseNote[0] === "c") octaveIndex++;
       } else if (clef === "bass") {
-        if (octaveIndex < 1) {
-          octaveIndex = 0;
-        }
-        if (note[0] === "c") {
-          octaveIndex += 1;
-        }
-        foundNotes[i] = foundNotes[i] + "/" + octave[octaveIndex];
-        console.log("Updated input: ", foundNotes[i]);
+        if (octaveIndex < 1) octaveIndex = 0;
+        if (baseNote[0] === "c") octaveIndex++;
       }
-    });
 
+      foundNotes[i] = `${baseNote}/${octave[octaveIndex]}`;
+    });
     console.log(accidentals);
 
     if (!containerRef.current) return;
