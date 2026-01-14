@@ -1,100 +1,422 @@
 [
-  {
+    {
     "id": 0,
-    "name": "C Major",
-    "scale": "Major",
-    "key": "C",
-    "notes": ["c", "d", "e", "f", "g", "a", "b", "c"]
-  },
-  {
-    "id": 1,
     "name": "C# Major",
     "scale": "Major",
     "key": "C#",
-    "notes": ["c#", "d#", "e#", "f#", "g#", "a#", "b#", "c#"]
+    "notes": ["c#","d#","e#","f#","g#","a#","b#","c#","c#","b#","a#","g#","f#","e#","d#","c#"]
   },
   {
-    "id": 2,
-    "name": "Db Major",
-    "scale": "Major",
-    "key": "Db",
-    "notes": ["db", "eb", "f", "gb", "ab", "bb", "c", "db"]
-  },
-  {
-    "id": 3,
-    "name": "D Major",
-    "scale": "Major",
-    "key": "D",
-    "notes": ["d", "e", "f#", "g", "a", "b", "c#", "d"]
-  },
-  {
-    "id": 4,
-    "name": "Eb Major",
-    "scale": "Major",
-    "key": "Eb",
-    "notes": ["eb", "f", "g", "ab", "bb", "c", "d", "eb"]
-  },
-  {
-    "id": 5,
-    "name": "E Major",
-    "scale": "Major",
-    "key": "E",
-    "notes": ["e", "f#", "g#", "a", "b", "c#", "d#", "e"]
-  },
-  {
-    "id": 6,
-    "name": "F Major",
-    "scale": "Major",
-    "key": "F",
-    "notes": ["f", "g", "a", "bb", "c", "d", "e", "f"]
-  },
-  {
-    "id": 7,
+    "id": 1,
     "name": "F# Major",
     "scale": "Major",
     "key": "F#",
-    "notes": ["f#", "g#", "a#", "b", "c#", "d#", "e#", "f#"]
+    "notes": ["f#","g#","a#","b","c#","d#","e#","f#","f#","e#","d#","c#","b","a#","g#","f#"]
   },
   {
-    "id": 8,
-    "name": "Gb Major",
-    "scale": "Major",
-    "key": "Gb",
-    "notes": ["gb", "ab", "bb", "cb", "db", "eb", "f", "gb"]
-  },
-  {
-    "id": 9,
-    "name": "G Major",
-    "scale": "Major",
-    "key": "G",
-    "notes": ["g", "a", "b", "c", "d", "e", "f#", "g"]
-  },
-  {
-    "id": 10,
-    "name": "Ab Major",
-    "scale": "Major",
-    "key": "Ab",
-    "notes": ["ab", "bb", "c", "db", "eb", "f", "g", "ab"]
-  },
-  {
-    "id": 11,
-    "name": "A Major",
-    "scale": "Major",
-    "key": "A",
-    "notes": ["a", "b", "c#", "d", "e", "f#", "g#", "a"]
-  },
-  {
-    "id": 12,
-    "name": "Bb Major",
-    "scale": "Major",
-    "key": "Bb",
-    "notes": ["bb", "c", "d", "eb", "f", "g", "a", "bb"]
-  },
-  {
-    "id": 13,
+    "id": 2,
     "name": "B Major",
     "scale": "Major",
     "key": "B",
-    "notes": ["b", "c#", "d#", "e", "f#", "g#", "a#", "b"]
+    "notes": ["b","c#","d#","e","f#","g#","a#","b","b","a#","g#","f#","e","d#","c#","b"]
+  },
+  {
+    "id": 3,
+    "name": "E Major",
+    "scale": "Major",
+    "key": "E",
+    "notes": ["e","f#","g#","a","b","c#","d#","e","e","d#","c#","b","a","g#","f#","e"]
+  },
+  {
+    "id": 4,
+    "name": "A Major",
+    "scale": "Major",
+    "key": "A",
+    "notes": ["a","b","c#","d","e","f#","g#","a","a","g#","f#","e","d","c#","b","a"]
+  },
+  {
+    "id": 5,
+    "name": "D Major",
+    "scale": "Major",
+    "key": "D",
+    "notes": ["d","e","f#","g","a","b","c#","d","d","c#","b","a","g","f#","e","d"]
+  },
+  {
+    "id": 6,
+    "name": "G Major",
+    "scale": "Major",
+    "key": "G",
+    "notes": ["g","a","b","c","d","e","f#","g","g","f#","e","d","c","b","a","g"]
+  },
+  {
+    "id": 7,
+    "name": "C Major",
+    "scale": "Major",
+    "key": "C",
+    "notes": ["c","d","e","f","g","a","b","c","c","b","a","g","f","e","d","c"]
+  },
+  {
+    "id": 8,
+    "name": "F Major",
+    "scale": "Major",
+    "key": "F",
+    "notes": ["f","g","a","bb","c","d","e","f","f","e","d","c","bb","a","g","f"]
+  },
+  {
+    "id": 9,
+    "name": "Bb Major",
+    "scale": "Major",
+    "key": "Bb",
+    "notes": ["bb","c","d","eb","f","g","a","bb","bb","a","g","f","eb","d","c","bb"]
+  },
+  {
+    "id": 10,
+    "name": "Eb Major",
+    "scale": "Major",
+    "key": "Eb",
+    "notes": ["eb","f","g","ab","bb","c","d","eb","eb","d","c","bb","ab","g","f","eb"]
+  },
+  {
+    "id": 11,
+    "name": "Ab Major",
+    "scale": "Major",
+    "key": "Ab",
+    "notes": ["ab","bb","c","db","eb","f","g","ab","ab","g","f","eb","db","c","bb","ab"]
+  },
+  {
+    "id": 12,
+    "name": "Db Major",
+    "scale": "Major",
+    "key": "Db",
+    "notes": ["db","eb","f","gb","ab","bb","c","db","db","c","bb","ab","gb","f","eb","db"]
+  },
+  {
+    "id": 13,
+    "name": "Gb Major",
+    "scale": "Major",
+    "key": "Gb",
+    "notes": ["gb","ab","bb","cb","db","eb","f","gb","gb","f","eb","db","cb","bb","ab","gb"]
+  },
+  {
+    "id": 14,
+    "name": "Cb Major",
+    "scale": "Major",
+    "key": "Cb",
+    "notes": ["cb","db","eb","fb","gb","ab","bb","cb","cb","bb","ab","gb","fb","eb","db","cb"]
+  },
+  {
+    "id": 15,
+    "name": "A# Natural Minor",
+    "scale": "Natural Minor",
+    "key": "C#",
+    "notes": ["a#","b#","c#","d#","e#","f#","g#","a#","a#","g#","f#","e#","d#","c#","b#","a#"]
+  },
+  {
+    "id": 16,
+    "name": "D# Natural Minor",
+    "scale": "Natural Minor",
+    "key": "F#",
+    "notes": ["d#","e#","f#","g#","a#","b","c#","d#","d#","c#","b","a#","g#","f#","e#","d#"]
+  },
+  {
+    "id": 17,
+    "name": "G# Natural Minor",
+    "scale": "Natural Minor",
+    "key": "B",
+    "notes": ["g#","a#","b","c#","d#","e","f#","g#","g#","f#","e","d#","c#","b","a#","g#"]
+  },
+  {
+    "id": 18,
+    "name": "C# Natural Minor",
+    "scale": "Natural Minor",
+    "key": "E",
+    "notes": ["c#","d#","e","f#","g#","a","b","c#","c#","b","a","g#","f#","e","d#","c#"]
+  },
+  {
+    "id": 19,
+    "name": "F# Natural Minor",
+    "scale": "Natural Minor",
+    "key": "A",
+    "notes": ["f#","g#","a","b","c#","d","e","f#","f#","e","d","c#","b","a","g#","f#"]
+  },
+  {
+    "id": 20,
+    "name": "B Natural Minor",
+    "scale": "Natural Minor",
+    "key": "D",
+    "notes": ["b","c#","d","e","f#","g","a","b","b","a","g","f#","e","d","c#","b"]
+  },
+  {
+    "id": 21,
+    "name": "E Natural Minor",
+    "scale": "Natural Minor",
+    "key": "G",
+    "notes": ["e","f#","g","a","b","c","d","e","e","d","c","b","a","g","f#","e"]
+  },
+  {
+    "id": 22,
+    "name": "A Natural Minor",
+    "scale": "Natural Minor",
+    "key": "C",
+    "notes": ["a","b","c","d","e","f","g","a","a","g","f","e","d","c","b","a"]
+  },
+  {
+    "id": 23,
+    "name": "D Natural Minor",
+    "scale": "Natural Minor",
+    "key": "F",
+    "notes": ["d","e","f","g","a","bb","c","d","d","c","bb","a","g","f","e","d"]
+  },
+  {
+    "id": 24,
+    "name": "G Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Bb",
+    "notes": ["g","a","bb","c","d","eb","f","g","g","f","eb","d","c","bb","a","g"]
+  },
+  {
+    "id": 25,
+    "name": "C Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Eb",
+    "notes": ["c","d","eb","f","g","ab","bb","c","c","bb","ab","g","f","eb","d","c"]
+  },
+  {
+    "id": 26,
+    "name": "F Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Ab",
+    "notes": ["f","g","ab","bb","c","db","eb","f","f","eb","db","c","bb","ab","g","f"]
+  },
+  {
+    "id": 27,
+    "name": "Bb Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Db",
+    "notes": ["bb","c","db","eb","f","gb","ab","bb","bb","ab","gb","f","eb","db","c","bb"]
+  },
+  {
+    "id": 28,
+    "name": "Eb Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Gb",
+    "notes": ["eb","f","gb","ab","bb","cb","db","eb","eb","db","cb","bb","ab","gb","f","eb"]
+  },
+  {
+    "id": 29,
+    "name": "Ab Natural Minor",
+    "scale": "Natural Minor",
+    "key": "Cb",
+    "notes": ["ab","bb","cb","db","eb","fb","gb","ab","ab","gb","fb","eb","db","cb","bb","ab"]
+  },
+    {
+    "id": 30,
+    "name": "A# Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "C#",
+    "notes": ["a#","b#","c#","d#","e#","f#","g##","a#","a#","g##","f#","e#","d#","c#","b#","a#"]
+  },
+  {
+    "id": 31,
+    "name": "D# Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "F#",
+    "notes": ["d#","e#","f#","g#","a#","b","c##","d#","d#","c##","b","a#","g#","f#","e#","d#"]
+  },
+  {
+    "id": 32,
+    "name": "G# Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "B",
+    "notes": ["g#","a#","b","c#","d#","e","f##","g#","g#","f##","e","d#","c#","b","a#","g#"]
+  },
+  {
+    "id": 33,
+    "name": "C# Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "E",
+    "notes": ["c#","d#","e","f#","g#","a","b#","c#","c#","b#","a","g#","f#","e","d#","c#"]
+  },
+  {
+    "id": 34,
+    "name": "F# Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "A",
+    "notes": ["f#","g#","a","b","c#","d","e#","f#","f#","e#","d","c#","b","a","g#","f#"]
+  },
+  {
+    "id": 35,
+    "name": "B Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "D",
+    "notes": ["b","c#","d","e","f#","g","a#","b","b","a#","g","f#","e","d","c#","b"]
+  },
+  {
+    "id": 36,
+    "name": "E Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "G",
+    "notes": ["e","f#","g","a","b","c","d#","e","e","d#","c","b","a","g","f#","e"]
+  },
+  {
+    "id": 37,
+    "name": "A Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "C",
+    "notes": ["a","b","c","d","e","f","g#","a","a","g#","f","e","d","c","b","a"]
+  },
+  {
+    "id": 38,
+    "name": "D Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "F",
+    "notes": ["d","e","f","g","a","bb","c#","d","d","c#","bb","a","g","f","e","d"]
+  },
+  {
+    "id": 39,
+    "name": "G Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Bb",
+    "notes": ["g","a","bb","c","d","eb","f#","g","g","f#","eb","d","c","bb","a","g"]
+  },
+  {
+    "id": 40,
+    "name": "C Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Eb",
+    "notes": ["c","d","eb","f","g","ab","b","c","c","b","ab","g","f","eb","d","c"]
+  },
+  {
+    "id": 41,
+    "name": "F Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Ab",
+    "notes": ["f","g","ab","bb","c","db","e","f","f","e","db","c","bb","ab","g","f"]
+  },
+  {
+    "id": 42,
+    "name": "Bb Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Db",
+    "notes": ["bb","c","db","eb","f","gb","a","bb","bb","a","gb","f","eb","db","c","bb"]
+  },
+  {
+    "id": 43,
+    "name": "Eb Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Gb",
+    "notes": ["eb","f","gb","ab","bb","cb","d","eb","eb","d","cb","bb","ab","gb","f","eb"]
+  },
+  {
+    "id": 44,
+    "name": "Ab Harmonic Minor",
+    "scale": "Harmonic Minor",
+    "key": "Cb",
+    "notes": ["ab","bb","cb","db","eb","fb","g","ab","ab","g","fb","eb","db","cb","bb","ab"]
+  },
+    {
+    "id": 45,
+    "name": "A# Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "C#",
+    "notes": ["a#","b#","c#","d#","e#","f##","g##","a#","a#","g#","f#","e#","d#","c#","b#","a#"]
+  },
+  {
+    "id": 46,
+    "name": "D# Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "F#",
+    "notes": ["d#","e#","f#","g#","a#","b#","c##","d#","d#","c#","b","a#","g#","f#","e#","d#"]
+  },
+  {
+    "id": 47,
+    "name": "G# Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "B",
+    "notes": ["g#","a#","b","c#","d#","e#","f##","g#","g#","f#","e","d#","c#","b","a#","g#"]
+  },
+  {
+    "id": 48,
+    "name": "C# Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "E",
+    "notes": ["c#","d#","e","f#","g#","a#","b#","c#","c#","b","a","g#","f#","e","d#","c#"]
+  },
+  {
+    "id": 49,
+    "name": "F# Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "A",
+    "notes": ["f#","g#","a","b","c#","d#","e#","f#","f#","e","d","c#","b","a","g#","f#"]
+  },
+  {
+    "id": 50,
+    "name": "B Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "D",
+    "notes": ["b","c#","d","e","f#","g#","a#","b","b","a","g","f#","e","d","c#","b"]
+  },
+  {
+    "id": 51,
+    "name": "E Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "G",
+    "notes": ["e","f#","g","a","b","c#","d#","e","e","d","c","b","a","g","f#","e"]
+  },
+  {
+    "id": 52,
+    "name": "A Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "C",
+    "notes": ["a","b","c","d","e","f#","g#","a","a","g","f","e","d","c","b","a"]
+  },
+  {
+    "id": 53,
+    "name": "D Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "F",
+    "notes": ["d","e","f","g","a","b","c#","d","d","c","bb","a","g","f","e","d"]
+  },
+  {
+    "id": 54,
+    "name": "G Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Bb",
+    "notes": ["g","a","bb","c","d","e","f#","g","g","f","eb","d","c","bb","a","g"]
+  },
+  {
+    "id": 55,
+    "name": "C Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Eb",
+    "notes": ["c","d","eb","f","g","a","b","c","c","bb","ab","g","f","eb","d","c"]
+  },
+  {
+    "id": 56,
+    "name": "F Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Ab",
+    "notes": ["f","g","ab","bb","c","d","e","f","f","eb","db","c","bb","ab","g","f"]
+  },
+  {
+    "id": 57,
+    "name": "Bb Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Db",
+    "notes": ["bb","c","db","eb","f","g","a","bb","bb","ab","gb","f","eb","db","c","bb"]
+  },
+  {
+    "id": 58,
+    "name": "Eb Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Gb",
+    "notes": ["eb","f","gb","ab","bb","c","d","eb","eb","db","cb","bb","ab","gb","f","eb"]
+  },
+  {
+    "id": 59,
+    "name": "Ab Melodic Minor",
+    "scale": "Melodic Minor",
+    "key": "Cb",
+    "notes": ["ab","bb","cb","db","eb","f","g","ab","ab","gb","fb","eb","db","cb","bb","ab"]
   }
 ]
