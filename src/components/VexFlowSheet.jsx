@@ -17,10 +17,13 @@ import scales from "./../../scales.json";
 export default function VexFlowSheet() {
   const containerRef = useRef(null);
   const octave = ["2", "3", "4", "5", "6"];
+  const pitchClasses = ["B#/C", "C#/Db", "D", "D#/Eb", "E/Fb", "E#/F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B/Cb"];
+  const modeOperations = ["Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"];
 
-  // 1️⃣ React state for selected scale
+  // React state
   const [selectedScaleName, setSelectedScaleName] = useState("Bb Major");
   const [selectedClef, setSelectedClef] = useState("treble");
+  const [selectedMode, setSelectedMode] = useState("Aeolian");
 
   useEffect(() => {
     let octaveIndex = selectedClef === "treble" ? 2 : 0;
@@ -33,7 +36,22 @@ export default function VexFlowSheet() {
     const foundNotes = [...foundScale.notes]; // clone
     const accidentals = [];
 
-    // Build notes with octave and accidentals
+    // Transpose the scale if a major diatonic mode is selected
+    if (modeOperations.includes(selectedMode)) {
+        // shift the notes
+        const shiftAmount = modeOperations.indexOf(selectedMode);
+        if (shiftAmount > 0) {
+          foundNotes.pop();
+          for (let i = 0; i < shiftAmount; i++) {
+            let removedNote = foundNotes.shift();
+            foundNotes.push(removedNote);
+          }
+          const repeatedNote = foundNotes[0];
+          foundNotes.push(repeatedNote);
+        }
+    }
+
+    // Build notes with accidentals and an octave
     foundNotes.forEach((note, i) => {
       const baseNote = note.split("/")[0];
       accidentals[i] = baseNote[1] ?? "";
@@ -44,6 +62,8 @@ export default function VexFlowSheet() {
 
       foundNotes[i] = `${baseNote}/${octave[octaveIndex]}`;
     });
+
+    console.log(selectedScaleName + " " + selectedMode + ": "+ foundNotes)
 
     if (!containerRef.current) return;
 
@@ -86,7 +106,7 @@ export default function VexFlowSheet() {
 
     beam1.setContext(context).draw();
     beam2.setContext(context).draw();
-  }, [selectedScaleName, , selectedClef]); // 🔑 Re-run effect when scale changes
+  }, [selectedScaleName, , selectedClef, selectedMode]); // 🔑 Re-run effect when scale changes
 
   return (
     <div style={{ width: "1000px", margin: "auto", padding: "20px" }}>
@@ -120,6 +140,21 @@ export default function VexFlowSheet() {
               <option key={1} value={"bass"}>
                 {"Bass"}
               </option>
+          </select>
+        </label>
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <label>
+          Select Mode:{" "}
+          <select
+            value={selectedMode}
+            onChange={(e) => setSelectedMode(e.target.value)}
+          >
+            {modeOperations.map((mode, i) => (
+              <option key={mode} value={mode}>
+                {mode}
+              </option>
+            ))}
           </select>
         </label>
       </div>
