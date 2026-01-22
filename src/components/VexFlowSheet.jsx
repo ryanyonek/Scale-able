@@ -289,6 +289,7 @@ export default function VexFlowSheet() {
     });
 
     // --- Accidentals for second measure ---
+    // NEEDS FIX, melodic minor accidentals, only show courtesy accidentals if in the key signature, use key signature map
     const secondMeasureAccidentals = secondMeasureNotes.map((note, i) => {
       const base = note.split("/")[0];
       const { accidental } = getNoteParts(base);
@@ -343,12 +344,19 @@ export default function VexFlowSheet() {
       let stave2 = null;
 
       if (firstMeasureNotesRaw.length > 0) {
-        stave1 = new Stave(0, 40, 400);
-        stave1.addClef(selectedClef).addKeySignature(key).setContext(context).draw();
+        stave1 = new Stave(0, 40, 560);
+
+        // Clef
+        stave1.addClef(selectedClef);
+
+        // 🔒 Fixed key signature width (v5 style)
+        stave1.addKeySignature(key);
+
+        stave1.setContext(context).draw();
       }
 
       if (secondMeasureNotesRaw.length > 0) {
-        stave2 = new Stave(400, 40, 400);
+        stave2 = new Stave(560, 40, 500);
         stave2.setContext(context).setEndBarType(Barline.type.DOUBLE).draw();
       }
 
@@ -443,7 +451,7 @@ export default function VexFlowSheet() {
 
 
   return (
-    <div style={{ width: "1000px", margin: "auto", padding: "20px" }}>
+    <div style={{ width: "1000px", margin: "auto", padding: "10px" }}>
       {/* Dropdown to select scale */}
       <div style={{ marginBottom: "10px" }}>
         <label>
@@ -657,7 +665,7 @@ export default function VexFlowSheet() {
       </div>
     </div>
       {/* Display key and scale */}
-      <div style={{ fontSize: "24pt", marginBottom: "0px", fontWeight: "bold" }}>
+      <div style={{ fontSize: "14pt", marginBottom: "0px", fontWeight: "bold" }}>
         {selectedScale === "Major" && `${selectedTonic} ${selectedScale} ${selectedMode}`}
         {selectedScale !== "Major" && `${selectedTonic} ${selectedScale}`}
       </div>
