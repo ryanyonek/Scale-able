@@ -1,4 +1,4 @@
-import VexFlowSheet from "./VexFlowSheet";
+import VexFlowSheet from "./components/music/VexFlowSheet";
 import React from "react";
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
     <div>
       <h1>Scale-able</h1>
       <VexFlowSheet />
+      {/*<VexFlowSheet />*/}
     </div>
   );
 }
