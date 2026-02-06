@@ -15,11 +15,13 @@ export default function VexFlowRenderer(props) {
       Renderer.Backends.SVG
     );
 
-    renderer.resize(1500, 300);
+    renderer.resize(1162, 300);
     const context = renderer.getContext();
 
     renderScale({ context, ...props });
   }, [props]);
 
-  return <div ref={containerRef} />;
+  return (
+      <div ref={containerRef} />
+  )
 }

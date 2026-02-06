@@ -331,14 +331,13 @@ export function renderScale({
 
   // - stave creation
   // - voice formatting
-  // --- Render ---
   try {
 
     let stave1 = null;
     let stave2 = null;
 
     if (firstMeasureNotesRaw.length > 0) {
-      stave1 = new Stave(0, 40, 560);
+      stave1 = new Stave(0, 40, 580);
 
       // Clef
       stave1.addClef(selectedClef);
@@ -350,7 +349,7 @@ export function renderScale({
     }
 
     if (secondMeasureNotesRaw.length > 0) {
-      stave2 = new Stave(560, 40, 500);
+      stave2 = new Stave(580, 40, 580);
       stave2.setContext(context).setEndBarType(Barline.type.DOUBLE).draw();
     }
 

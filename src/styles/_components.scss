@@ -1,0 +1,29 @@
+.control-panel {
+  gap: 1.0rem;
+  max-width: 800px;
+  margin: 0 auto 0 auto; // center controls block
+}
+
+.control-wrapper {
+  display: flex;
+  justify-content: left;
+}
+
+.scale-name-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.0rem;
+}
+
+select, button {
+  padding: 0.6rem 0.8rem;
+  border-radius: 4pt;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .control-panel {
+    grid-template-columns: 1fr;
+  }
+}

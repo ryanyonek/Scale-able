@@ -1,7 +1,7 @@
 export default function ScaleSelect({ value, onChange, scaleTypes }) {
   return (
     <div className="mb-3">
-      <label className="form-label">Scale</label>
+      <label className="form-label">Scale: </label>
       <select
         className="form-select"
         value={value}

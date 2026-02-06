@@ -12,6 +12,7 @@ import LyricsSelect from "../controls/LyricsSelect";
 import OctaveToggle from "../controls/OctaveToggle";
 import NoteLabelsToggle from "../controls/NoteLabelsToggle";
 import TonicSelect from "../controls/TonicSelect";
+import ScaleNameDisplay from "../ui/ScaleNameDisplay";
 
 export default function VexFlowSheet() {
   const state = useScaleState();
@@ -36,86 +37,98 @@ useEffect(() => {
 }, [selectedScale, selectedTonic]);
 
   return (
-    <div className="card p-3 mb-4">
-      <TonicSelect 
-        value={selectedTonic}
-        onChange={setSelectedTonic}
-        majorKeys={majorKeys}
-        minorKeys={minorKeys}
-        selectedScale={selectedScale}
-      />
-      
-      <ScaleSelect
-        value={selectedScale}
-        onChange={setSelectedScale}
-        scaleTypes={scaleTypes}
-      />
+    <div className="app-container">
+      <div className="control-wrapper">
+        <div className="control-panel">
+          <TonicSelect 
+            value={selectedTonic}
+            onChange={setSelectedTonic}
+            majorKeys={majorKeys}
+            minorKeys={minorKeys}
+            selectedScale={selectedScale}
+          />
+        
+          <ScaleSelect
+            value={selectedScale}
+            onChange={setSelectedScale}
+            scaleTypes={scaleTypes}
+          />
 
-      {selectedScale === "Major" && (
-        <ModeSelect 
-          value={selectedMode}
-          onChange={setSelectedMode}
-          modeShifts={modeShifts}
-        />
-      )}
+          <ClefSelect
+            value={selectedClef}
+            onChange={setSelectedClef}
+          />
 
-      <ClefSelect
-        value={selectedClef}
-        onChange={setSelectedClef}
-      />
+          {selectedScale === "Major" && (
+            <ModeSelect 
+              value={selectedMode}
+              onChange={setSelectedMode}
+              modeShifts={modeShifts}
+            />
+          )}
+        </div>
 
-      < AllAccidentalsToggle 
-        value={showAllAccidentals}
-        onChange={setShowAllAccidentals}
-      />
+          <div className="control-panel">
+            <AllAccidentalsToggle 
+              value={showAllAccidentals}
+              onChange={setShowAllAccidentals}
+            />
 
-      {selectedScale === "Melodic Minor" && (
-        < CourtesyAccidentalsToggle 
-        value={showCourtesyAccidentals}
-        onChange={setShowCourtesyAccidentals}
-      />
-      )}
+            {selectedScale === "Melodic Minor" && (
+              <CourtesyAccidentalsToggle 
+                value={showCourtesyAccidentals}
+                onChange={setShowCourtesyAccidentals}
+              />
+            )}
+          </div>
 
-      <NoteLabelsToggle 
-        value={showNoteLabels}
-        onChange={setShowNoteLabels}
-      />
+          <div className="control-panel">
+            <NoteLabelsToggle 
+              value={showNoteLabels}
+              onChange={setShowNoteLabels}
+            />
 
-      < DirectionSelect
-        value={directionMode}
-        onChange={setDirectionMode}
-      />
+            {showNoteLabels && (
+              <LyricsSelect
+                value={selectedLyric}
+                onChange={setSelectedLyric}
+              />
+            )}
 
-      {showNoteLabels && (
-        <LyricsSelect
-          value={selectedLyric}
-          onChange={setSelectedLyric}
-        />
-      )}
+          </div>
+          <div className="control-panel">
+            <DirectionSelect
+              value={directionMode}
+              onChange={setDirectionMode}
+            />
 
-      <OctaveToggle 
-        value={octaveShift}
-        onChange={setOctaveShift}
-      />
+            <OctaveToggle 
+              value={octaveShift}
+              onChange={setOctaveShift}
+            />
+          </div>
+        </div>
 
-      {/* Display key and scale */}
-      <div style={{ fontSize: "14pt", marginBottom: "0px", fontWeight: "bold" }}>
-        {selectedScale === "Major" && `${selectedTonic} ${selectedScale} ${selectedMode}`}
-        {selectedScale !== "Major" && `${selectedTonic} ${selectedScale}`}
-      </div>
+        <div className="scale-name-wrapper">
+          <ScaleNameDisplay 
+            selectedScale={selectedScale}
+            selectedTonic={selectedTonic}
+            selectedMode={selectedMode}
+          />
+        </div>
+          <VexFlowRenderer
+            selectedTonic={selectedTonic}
+            selectedScale={selectedScale}
+            selectedClef={selectedClef}
+            showAllAccidentals={showAllAccidentals}
+            showCourtesyAccidentals={showCourtesyAccidentals}
+            directionMode={directionMode}
+            selectedMode={selectedMode}
+            showNoteLabels={showNoteLabels}
+            selectedLyric={selectedLyric}
+            octaveShift={octaveShift}
+          />
 
-      <VexFlowRenderer
-        selectedTonic={selectedTonic}
-        selectedScale={selectedScale}
-        selectedClef={selectedClef}
-        showAllAccidentals={showAllAccidentals}
-        showCourtesyAccidentals={showCourtesyAccidentals}
-        directionMode={directionMode}
-        selectedMode={selectedMode}
-        showNoteLabels={showNoteLabels}
-        selectedLyric={selectedLyric}
-        octaveShift={octaveShift}
-      />
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function NoteLabelsToggle({ value, onChange }) {
         checked={value}
         onChange={(e) => onChange(e.target.checked)}
         />
-        {" "}Show Note Labels
+        Show Note Labels
     </label>
     </div>
   );

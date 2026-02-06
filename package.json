@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sass": "^1.97.3",
     "vexflow": "5.0.0"
   },
   "devDependencies": {

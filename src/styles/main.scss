@@ -1,0 +1,10 @@
+// Load variables first
+@use "variables";
+
+// Bootstrap overrides (optional)
+@use "bootstrap";
+
+// Base styles
+@use "layout";
+@use "components";
+@use "vexflow";
