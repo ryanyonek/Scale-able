@@ -1,25 +1,35 @@
 import { Router } from "express";
-import { transpositionKeys, transpositionIntervals } from "../services/theory/constants.js";
+import { transposeTonic } from "../services/theory/transposeEngine.js";
+import { generateScale } from "../services/theory/generateScale.js";
 
 const router = Router();
 
-const chromatic = [
-  "C","C#","D","D#","E","F",
-  "F#","G","G#","A","A#","B"
-];
-
 router.post("/", (req, res) => {
-  const { notes, interval } = req.body;
+  try {
+    const config = req.body;
 
-  const transposed = notes.map(note => {
-    const index = chromatic.indexOf(note);
+    console.log(`Config Requested: ${config}`);
 
-    if (index === -1) return note;
+    const key = config.transpositionKey;
 
-    return chromatic[(index + interval) % 12];
+    console.log(key);
+
+    const newTonic = transposeTonic(config.tonic, key);
+
+    const newConfig = {
+      ...config,
+      tonic: newTonic
+    };
+
+    const scale = generateScale(newConfig);
+
+    res.json({...scale,
+      tonic: newTonic
   });
 
-  res.json({ transposed });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 export default router;

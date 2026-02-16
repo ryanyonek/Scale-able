@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useScaleState } from "../../hooks/useScaleState";
 import {
   scaleTypes,
   majorKeys,
@@ -22,44 +21,33 @@ import ScaleNameDisplay from "../ui/ScaleNameDisplay";
 import TranspositionSelect from "../controls/transpositionSelect";
 import OctaveSelect from "../controls/OctaveSelect";
 
-export default function VexFlowSheet(props) {
-  const state = useScaleState();
-
-  const [selectedScale, setSelectedScale] = state.selectedScale;
-  const [selectedClef, setSelectedClef] = state.selectedClef;
-  const [showAllAccidentals, setShowAllAccidentals] = state.showAllAccidentals;
-  const [showCourtesyAccidentals, setShowCourtesyAccidentals] = state.showCourtesyAccidentals;
-  const [directionMode, setDirectionMode] = state.directionMode;
-  const [selectedMode, setSelectedMode] = state.selectedMode;
-  const [showNoteLabels, setShowNoteLabels] = state.showNoteLabels;
-  const [selectedLyric, setSelectedLyric] = state.selectedLyric;
-  const [octaveShift, setOctaveShift] = state.octaveShift;
-  const [selectedTonic, setSelectedTonic] = state.selectedTonic;
-  const [transpositionInterval, setTranspositionInterval] = state.transpositionInterval;
+export default function VexFlowSheet({ config, setConfig, endpoint, variant }) {
 
   // ✅ scaleData state INSIDE component
   const [scaleData, setScaleData] = useState(null);
 
   // ✅ Build options INSIDE component
-  const options = {
-    tonic: selectedTonic,
-    scale: selectedScale,
-    clef: selectedClef,
+  const {
+    tonic,
+    scale,
+    clef,
     showAllAccidentals,
     showCourtesyAccidentals,
     directionMode,
-    mode: selectedMode,
+    mode,
     showNoteLabels,
-    lyric: selectedLyric,
+    lyric,
     octaveShift,
-    transpositionInterval
-  };
+    transpositionKey
+  } = config ;
+
+  const options = config;
 
   // ✅ Fetch scale from backend
   useEffect(() => {
     async function fetchScale() {
       try {
-        const res = await fetch("/api/scale", {
+        const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(options),
@@ -71,6 +59,8 @@ export default function VexFlowSheet(props) {
         }
 
         const data = await res.json();
+        console.log(`Scale Data: ${res}`)
+
         setScaleData(data);
 
       } catch (err) {
@@ -79,58 +69,63 @@ export default function VexFlowSheet(props) {
     }
 
     fetchScale();
-  }, [
-    selectedTonic,
-    selectedScale,
-    selectedClef,
-    showAllAccidentals,
-    showCourtesyAccidentals,
-    directionMode,
-    selectedMode,
-    showNoteLabels,
-    selectedLyric,
-    octaveShift,
-    transpositionInterval
-  ]);
+  }, [config, endpoint]);
 
+  useEffect(() => {
+  console.log("TRANS KEY:", transpositionKey);
+}, [transpositionKey]);
 
 useEffect(() => {
-  if (selectedScale === "Major" && !majorKeys.includes(selectedTonic)) {
-    setSelectedTonic("C");
-  } else if (selectedScale !== "Major" && !minorKeys.includes(selectedTonic)) {
-    setSelectedTonic("A");
+  if (scale === "Major" && !majorKeys.includes(tonic)) {
+    setConfig(prev => ({
+      ...prev,
+      tonic: "C"
+    }));
+  } else if (scale !== "Major" && !minorKeys.includes(tonic)) {
+    setConfig(prev => ({
+      ...prev,
+      tonic: "A"
+    }));
   }
-}, [selectedScale, selectedTonic]);
+}, [scale, tonic]);
 
   return (
-    <div className="app-container">
-      {props.mode === "original" && (
+        <div className="app-container">
+      {variant === "original" && (
       <div className="control-wrapper">
       
         <div className="control-panel">
           <TonicSelect 
-            value={selectedTonic}
-            onChange={setSelectedTonic}
+            value={tonic}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, tonic: value }))
+            }
             majorKeys={majorKeys}
             minorKeys={minorKeys}
-            selectedScale={selectedScale}
+            selectedScale={scale}
           />
         
           <ScaleSelect
-            value={selectedScale}
-            onChange={setSelectedScale}
+            value={scale}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, scale: value }))
+            }
             scaleTypes={scaleTypes}
           />
 
           <ClefSelect
-            value={selectedClef}
-            onChange={setSelectedClef}
+            value={clef}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, clef: value }))
+            }
           />
 
-          {selectedScale === "Major" && (
+          {scale === "Major" && (
             <ModeSelect 
-              value={selectedMode}
-              onChange={setSelectedMode}
+              value={mode}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, mode: value }))
+            }
               modeShifts={modeShifts}
             />
           )}
@@ -139,13 +134,17 @@ useEffect(() => {
         <div className="control-panel">
           <AllAccidentalsToggle 
             value={showAllAccidentals}
-            onChange={setShowAllAccidentals}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, showAllAccidentals: value }))
+            }
           />
 
-          {selectedScale === "Melodic Minor" && (
+          {scale === "Melodic Minor" && (
             <CourtesyAccidentalsToggle 
               value={showCourtesyAccidentals}
-              onChange={setShowCourtesyAccidentals}
+              onChange={(value) =>
+                setConfig(prev => ({ ...prev, showCourtesyAccidentals: value }))
+              }
             />
           )}
         </div>
@@ -153,13 +152,17 @@ useEffect(() => {
         <div className="control-panel">
           <NoteLabelsToggle 
             value={showNoteLabels}
-            onChange={setShowNoteLabels}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, showNoteLabels: value }))
+            }
           />
 
           {showNoteLabels && (
             <LyricsSelect
-              value={selectedLyric}
-              onChange={setSelectedLyric}
+              value={lyric}
+              onChange={(value) =>
+                setConfig(prev => ({ ...prev, lyric: value }))
+              }
             />
           )}
 
@@ -167,29 +170,39 @@ useEffect(() => {
         <div className="control-panel">
           <DirectionSelect
             value={directionMode}
-            onChange={setDirectionMode}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, directionMode: value }))
+            }
           />
 
           <OctaveSelect 
             value={octaveShift}
-            onChange={setOctaveShift}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, octaveShift: value }))
+            }
           />
         </div>
         
       </div> )}
 
-      {props.mode === "transpose" && (
+      {variant === "transpose" && (
         <TranspositionSelect 
-        value={transpositionInterval}
-        onChange={setTranspositionInterval}
-        intervals={transpositionKeys}
+        value={transpositionKey}
+        onChange={(value) =>
+          setConfig(prev => ({ ...prev, transpositionKey: value }))
+        }
+        keys={transpositionKeys}
       />)}
 
       <div className="scale-name-wrapper">
         <ScaleNameDisplay 
-          selectedScale={selectedScale}
-          selectedTonic={selectedTonic}
-          selectedMode={selectedMode}
+          selectedScale={scale}
+          selectedTonic={
+            variant === "transpose"
+              ? scaleData?.tonic
+              : tonic
+          }
+          selectedMode={mode}
         />
       </div>
         <VexFlowRenderer

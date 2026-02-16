@@ -1,4 +1,4 @@
-export default function TranspositionSelect({ value, onChange, intervals }) {
+export default function TranspositionSelect({ value, onChange, keys }) {
   return (
     <div>
       <label>
@@ -8,8 +8,8 @@ export default function TranspositionSelect({ value, onChange, intervals }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
         >
-        {intervals.map((interval) => (
-            <option key={interval} value={interval}>
+        {keys.map((interval) => (
+            <option key={interval}>
                 {interval}
             </option>
          ))}

@@ -51,8 +51,39 @@ export const keySignatureMap = {
   "Cb": { "b": "b", "e": "b", "a": "b", "d": "b", "g": "b", "c": "b", "f": "b"}
 };
 
-export const transpositionKeys = ["C+", "B+", "Bb+", "A+", "Ab+", "G+", "Gb+", "F+", "E+", "Eb+", "D+", "Db+", "C", "H", "Bb-", "A-", "Ab-", "G-", "Gb-", "F-", "E-", "Eb-", "D-", "Db-", "C-", "H-"];
-export const transpositionIntervals = [-12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+export const chromaticKeys = [
+  "C","Db","D","Eb","E","F",
+  "Gb","G","Ab","A","Bb","B"
+];
+export const transpositionKeys = ["C+", "B+", "Bb+", "A+", "Ab+", "G+", "Gb+", "F+", "E+", "Eb+", "D+", "Db+", "C", "H", "Bb-", "A-", "Ab-", "G-", "Gb-", "F-", "E-", "Eb-", "D-", "Db-", "C-", "B-"];
+export const transpositionMap = {
+  "C+": -12,
+  "B+": -11,
+  "Bb+": -10,
+  "A+": -9,
+  "Ab+": -8,
+  "G+": -7,
+  "Gb+": -6,
+  "F+": -5,
+  "E+": -4,
+  "Eb+": -3,
+  "D+": -2,
+  "Db+": -1,
+  "C": 0,
+  "H": 1,
+  "Bb-": 2,
+  "A-": 3,
+  "Ab-": 4,
+  "G-": 5,
+  "Gb-": 6,
+  "F-": 7,
+  "E-": 8,
+  "Eb-": 9,
+  "D-": 10,
+  "Db-": 11,
+  "C-": 12,
+  "B-": 13
+};
 
 export const scaleDegrees = ["1", "2", "3", "4", "5", "6", "7", "8", "8", "7", "6", "5", "4", "3", "2", "1"];
 export const majorSolfege = ["Do", "Re", "Mi", "Fa", "Sol", "La", "Ti", "Do", "Do", "Ti", "La", "Sol", "Fa", "Mi", "Re", "Do"];
