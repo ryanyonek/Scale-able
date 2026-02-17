@@ -13,7 +13,8 @@ export default function Transpose() {
     showNoteLabels: true,
     lyric: "Note Names",
     octaveShift: "current",
-    transpositionKey: "C"
+    transpositionKey: "C",
+    showControls: false,
   });
 
   return (

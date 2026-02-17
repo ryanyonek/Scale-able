@@ -2,9 +2,10 @@
 
 .control-panel {
   
-  gap: 1.0rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
   max-width: 800px;
-  min-width: 250px;
+  min-width: 225px;
   margin: 0 auto 0 auto; // center controls block
   background-color: white;
   font-family: "Amethysta", serif;
@@ -16,6 +17,7 @@
 .control-wrapper {
   display: flex;
   justify-content: left;
+  //border: 1px solid black;
 }
 
 .scale-name-wrapper {
@@ -26,6 +28,7 @@
 
 select, button {
   padding: 0.6rem 0.8rem;
+  margin-top: 0.5rem;
   border-radius: 4pt;
   border: 1px solid black;
   font-size: 0.95rem;

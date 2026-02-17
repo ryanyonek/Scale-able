@@ -4,12 +4,12 @@ svg {
   display: block;
   width: auto;   // prevent stretching
   // border: 1px solid black;
+  background-color: white;
 }
 
 .sheet-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 0.5rem;
   width: 100%;
 
 }

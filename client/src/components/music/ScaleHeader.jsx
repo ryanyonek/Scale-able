@@ -1,9 +1,10 @@
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import logo from "../../assets/cover.png"
 
-export default function ScaleHeader(props) {
+export default function ScaleHeader() {
     return (
         <div>
-            <img src={logo} height="150px" alt="Company Logo" />
+            <Link to="/"><img src={logo} height="50px" alt="Scale-able Logo" /></Link>
         </div>
 
     )

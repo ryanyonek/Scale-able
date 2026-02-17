@@ -13,15 +13,21 @@ export default function Scale() {
     showNoteLabels: true,
     lyric: "Note Names",
     octaveShift: "current",
-    transpositionKey: "C"
+    transpositionKey: "C",
+    showControls: true,
   });
 
   return (
-    <VexFlowSheet
-      config={config}
-      setConfig={setConfig}
-      endpoint="/api/scale"
-      variant="original"
-    />
+    <div>
+      <h2>Scale Viewer</h2>
+
+      <VexFlowSheet
+        config={config}
+        setConfig={setConfig}
+        endpoint="/api/scale"
+        variant="original"
+      />
+    </div>
+
   );
 }

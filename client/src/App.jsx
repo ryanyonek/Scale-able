@@ -8,9 +8,9 @@ import ScaleHeader from "./components/music/ScaleHeader";
 export default function App() {
   return (
     <BrowserRouter>
-      <nav style={{ padding: "1rem", display: "flex", gap: "1rem" }}>
+      <nav style={{ fontSize: "28pt", padding: "1.5rem", display: "flex", gap: "3rem" }}>
         <ScaleHeader />
-        <Link to="/">Scales</Link>
+        <Link to="/">Scale Viewer</Link>
         <Link to="/transpose">Transpose</Link>
         <Link to="/worksheets">Worksheets</Link>
       </nav>
