@@ -51,11 +51,17 @@ export const keySignatureMap = {
   "Cb": { "b": "b", "e": "b", "a": "b", "d": "b", "g": "b", "c": "b", "f": "b"}
 };
 
-export const chromaticKeys = [
+export const chromaticFlatKeys = [
   "C","Db","D","Eb","E","F",
-  "Gb","G","Ab","A","Bb","B"
+  "Gb","G","Ab","A","Bb","Cb"
 ];
-export const transpositionKeys = ["C+", "B+", "Bb+", "A+", "Ab+", "G+", "Gb+", "F+", "E+", "Eb+", "D+", "Db+", "C", "H", "Bb-", "A-", "Ab-", "G-", "Gb-", "F-", "E-", "Eb-", "D-", "Db-", "C-", "B-"];
+
+export const chromaticSharpKeys = [
+  "C","C#","D","D#","E","F",
+  "F#","G","G#","A","A#","B"
+];
+
+export const transpositionKeys = ["C+", "B+", "Bb+", "A+", "Ab+", "G+", "Gb+", "F+", "E+", "Eb+", "D+", "Db+", "C", "B", "Bb-", "A-", "Ab-", "G-", "Gb-", "F-", "E-", "Eb-", "D-", "Db-", "C-", "B-"];
 export const transpositionMap = {
   "C+": -12,
   "B+": -11,
