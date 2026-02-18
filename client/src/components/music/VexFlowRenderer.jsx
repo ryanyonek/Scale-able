@@ -15,7 +15,7 @@ export default function VexFlowRenderer({ scaleData, options }) {
       Renderer.Backends.SVG
     );
 
-    renderer.resize(1200, 300);
+    renderer.resize(1200, 220);
     const context = renderer.getContext();
 
     renderScale({ context, scaleData, options });

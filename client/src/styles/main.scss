@@ -1,9 +1,6 @@
 // Load variables first
 @use 'variables' as vars;
 
-// Bootstrap overrides (optional)
-@use "bootstrap";
-
 // Base styles
 @use "layout";
 @use "components";

@@ -9,9 +9,9 @@ export default function DirectionSelect({ value, onChange }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
         >
-          <option value="both">Ascending & Descending</option>
-          <option value="ascending">Ascending only</option>
-          <option value="descending">Descending only</option>
+          <option value="both">Asc. & Desc.</option>
+          <option value="ascending">Asc. only</option>
+          <option value="descending">Desc. only</option>
         </select>
       </label>
     </div>

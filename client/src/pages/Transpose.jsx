@@ -9,6 +9,7 @@ export default function Transpose() {
     showAllAccidentals: false,
     showCourtesyAccidentals: true,
     directionMode: "both",
+    showMode: false,
     mode: "Ionian",
     showNoteLabels: true,
     lyric: "Note Names",

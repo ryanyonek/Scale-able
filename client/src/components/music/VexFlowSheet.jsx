@@ -18,9 +18,10 @@ import LyricsSelect from "../controls/LyricsSelect";
 import NoteLabelsToggle from "../controls/NoteLabelsToggle";
 import TonicSelect from "../controls/TonicSelect";
 import ScaleNameDisplay from "../ui/ScaleNameDisplay";
-import TranspositionSelect from "../controls/transpositionSelect";
+import TranspositionSelect from "../controls/TranspositionSelect";
 import OctaveSelect from "../controls/OctaveSelect";
 import ShowControls from "../controls/ShowControls.jsx";
+import ShowModeToggle from "../controls/ShowModeToggle.jsx";
 
 export default function VexFlowSheet({ config, setConfig, endpoint, variant }) {
 
@@ -35,6 +36,7 @@ export default function VexFlowSheet({ config, setConfig, endpoint, variant }) {
     showAllAccidentals,
     showCourtesyAccidentals,
     directionMode,
+    showMode,
     mode,
     showNoteLabels,
     lyric,
@@ -93,15 +95,17 @@ useEffect(() => {
 
   return (
     <div>
-        <ShowControls 
-          value={showControls}
-          onChange={(value) =>
-            setConfig(prev => ({ ...prev, showControls: value }))
-          }
-        
-        />
       <div className="app-container">
+        {variant === "original" && 
+          <ShowControls 
+            value={showControls}
+            onChange={(value) =>
+              setConfig(prev => ({ ...prev, showControls: value }))
+            }
+          />
+        }
         {variant === "original" && showControls && (
+        
         <div className="control-wrapper">
         
           <div className="control-panel">
@@ -129,16 +133,6 @@ useEffect(() => {
                 setConfig(prev => ({ ...prev, clef: value }))
               }
             />
-
-            {scale === "Major" && (
-              <ModeSelect 
-                value={mode}
-              onChange={(value) =>
-                setConfig(prev => ({ ...prev, mode: value }))
-              }
-                modeShifts={modeShifts}
-              />
-            )}
           </div>
 
           <div className="control-panel">
@@ -155,6 +149,21 @@ useEffect(() => {
                 onChange={(value) =>
                   setConfig(prev => ({ ...prev, showCourtesyAccidentals: value }))
                 }
+              />
+            )}
+            <ShowModeToggle 
+              value={showMode}
+              onChange={(value) =>
+                setConfig(prev => ({ ...prev, showMode: value }))
+              }
+            />
+            {scale === "Major" && showMode && (
+              <ModeSelect 
+                value={mode}
+              onChange={(value) =>
+                setConfig(prev => ({ ...prev, mode: value }))
+              }
+                modeShifts={modeShifts}
               />
             )}
           </div>
@@ -213,6 +222,7 @@ useEffect(() => {
                 : tonic
             }
             selectedMode={mode}
+            showMode={showMode}
           />
         </div>
           <VexFlowRenderer

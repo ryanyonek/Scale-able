@@ -5,7 +5,7 @@
   gap: 0.5rem;
   padding: 0.5rem;
   max-width: 800px;
-  min-width: 225px;
+  min-width: 250px;
   margin: 0 auto 0 auto; // center controls block
   background-color: white;
   font-family: "Amethysta", serif;
@@ -23,7 +23,10 @@
 .scale-name-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 2.0rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
 
 select, button {
@@ -32,6 +35,11 @@ select, button {
   border-radius: 4pt;
   border: 1px solid black;
   font-size: 0.95rem;
+
+}
+
+h3 {
+  text-align: center;
 }
 
 @media (max-width: 640px) {
