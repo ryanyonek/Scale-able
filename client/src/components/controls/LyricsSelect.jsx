@@ -2,7 +2,7 @@ export default function LyricsSelect({ value, onChange }) {
   return (
     // Lyrics type selector (only when enabled)
     
-    <div style={{ marginBottom: "10px" }}>
+    <div className="scale-control">
       <label>
         <b>Note Label:{" "}</b>
         <select

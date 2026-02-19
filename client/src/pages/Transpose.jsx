@@ -20,9 +20,9 @@ export default function Transpose() {
 
   return (
     <>
-      <h2>Transpose Scales</h2>
+      <h1  className="page-title">Transpose Scales</h1>
 
-      <h3>Sounding Pitch (Concert)</h3>
+      <h2 className="scale-title">Sounding Pitch (Concert)</h2>
       <VexFlowSheet
         config={config}
         setConfig={setConfig}
@@ -30,7 +30,7 @@ export default function Transpose() {
         variant="original"
       />
 
-      <h3>Written Pitch (Transposed)</h3>
+      <h2 className="scale-title">Written Pitch (Transposed)</h2>
       <VexFlowSheet
         config={config}
         setConfig={setConfig}

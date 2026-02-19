@@ -1,7 +1,7 @@
 export default function OctaveSelect({ value, onChange }) {
   return (
     // Octave Toggle, 8va, default, or 8vb
-    <div style={{ marginBottom: "10px" }}>
+    <div className="scale-control">
       <label>
         <b>Octave:{" "}</b>
         <select

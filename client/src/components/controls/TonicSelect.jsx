@@ -1,7 +1,7 @@
 export default function TonicSelect({ value, onChange, selectedScale, majorKeys, minorKeys }) {
   return (
     // Dropdown to select tonic
-    <div>
+    <div className="scale-control">
       <label>
         <b>Select Tonic:{" "}</b>
         <select

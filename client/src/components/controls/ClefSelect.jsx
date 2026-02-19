@@ -1,7 +1,7 @@
 export default function ClefSelect({ value, onChange }) {
   return (
     // Clef Dropdown
-      <div style={{ marginBottom: "10px" }}>
+      <div className="scale-control">
         <label>
           <b>Select Clef:{" "}</b>
           <select

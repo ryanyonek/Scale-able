@@ -1,6 +1,6 @@
 export default function ScaleSelect({ value, onChange, scaleTypes }) {
   return (
-    <div className="mb-3">
+    <div className="scale-control">
       <label>
         <b>Scale: </b> 
       </label>

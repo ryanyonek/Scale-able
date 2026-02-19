@@ -1,7 +1,7 @@
 export default function ShowModeToggle({ value, onChange }) {
   return (
     // Toggle major modes dropdown
-    <div style={{ marginBottom: "10px" }}>
+    <div className="scale-control">
     <label>
         <input
         className="amethysta-regular"

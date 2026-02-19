@@ -20,13 +20,22 @@
   //border: 1px solid black;
 }
 
+.scale-control {
+  margin-bottom: 0.5rem;
+}
+
 .scale-name-wrapper {
-  display: flex;
   justify-content: center;
   margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  text-align: center;
+  font-size: 16pt;
+  font-weight: bold;
   border-top: 1px solid black;
   border-left: 1px solid black;
   border-right: 1px solid black;
+  width: 100%;
+  background-color: white;
 }
 
 select, button {
@@ -38,8 +47,12 @@ select, button {
 
 }
 
-h3 {
+.scale-title {
   text-align: center;
+}
+
+.big-controls {
+  font-size: 14pt;
 }
 
 @media (max-width: 640px) {

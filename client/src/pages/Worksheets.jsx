@@ -15,7 +15,7 @@ export default function Worksheets() {
 
   return (
     <>
-      <h2>Worksheet Generator</h2>
+      <h2 className="page-title">Worksheet Generator</h2>
       <button onClick={generateWorksheet}>
         Generate Worksheet
       </button>

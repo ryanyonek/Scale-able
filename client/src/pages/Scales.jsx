@@ -20,7 +20,7 @@ export default function Scale() {
 
   return (
     <div>
-      <h2>Scale Viewer</h2>
+      <h1 className="page-title">Scale Viewer</h1>
 
       <VexFlowSheet
         config={config}

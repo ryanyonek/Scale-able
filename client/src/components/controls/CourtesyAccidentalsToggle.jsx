@@ -2,7 +2,7 @@ export default function CourtesyAccidentalsToggle ({ value, onChange}) {
   return (
       // Checkbox for courtesy accidentals toggle
       
-      <div style={{ marginBottom: "10px" }}>
+      <div className="scale-control">
         <label>
           <input
             type="checkbox"

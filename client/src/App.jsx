@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-import Scales from "./pages/Scales";
-import Transpose from "./pages/Transpose";
-import Worksheets from "./pages/Worksheets";
-import ScaleHeader from "./components/music/ScaleHeader";
+import Scales from "./pages/Scales.jsx";
+import Transpose from "./pages/Transpose.jsx";
+import Worksheets from "./pages/Worksheets.jsx";
+import ScaleHeader from "./components/ui/ScaleHeader.jsx";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <nav style={{ fontSize: "28pt", padding: "1.5rem", display: "flex", gap: "3rem" }}>
+      <nav className="navbar">
         <ScaleHeader />
-        <Link to="/">Scale Viewer</Link>
-        <Link to="/transpose">Transpose</Link>
-        <Link to="/worksheets">Worksheets</Link>
+        <Link className="navlink" to="/">Scale Viewer</Link>
+        <Link className="navlink" to="/transpose">Transpose</Link>
+        <Link className="navlink" to="/worksheets">Worksheets</Link>
       </nav>
 
       <Routes>

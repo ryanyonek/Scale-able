@@ -1,6 +1,6 @@
 export default function AllAccidentalsToggle({ value, onChange }) {
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div className="scale-control">
       {/* Checkbox for all accidentals toggle */}
       <label>
         <input
