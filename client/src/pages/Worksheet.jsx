@@ -1,4 +1,4 @@
-export default function Worksheets() {
+export default function Worksheet() {
 
   async function generateWorksheet() {
     const res = await fetch("http://localhost:5000/api/export/worksheet", {

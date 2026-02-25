@@ -6,7 +6,7 @@ html, body {
 }
 
 .navbar {
-  font-size: 28pt;
+  font-size: 1.5rem;
   display: flex;
   gap: 3rem;
   border-bottom: 2px solid black;
@@ -17,12 +17,12 @@ html, body {
 }
 
 .navlink {
-  padding-top: 1rem;
+  padding-top: 0rem;
 }
 
 .logo {
   border: 1px solid black;
-  height: 70px;
+  height: 1.5rem;
 }
 
 .page-title {
