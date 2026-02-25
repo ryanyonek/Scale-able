@@ -51,3 +51,46 @@ body {
   padding-bottom: 1.0rem;
   //border: 1px solid black;
 }
+
+.print-only {
+  display: none;
+}
+
+.worksheet-row-card {
+  margin-bottom: 1rem;
+}
+
+.worksheet-print-row {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 0.75rem;
+}
+
+@media print {
+  body {
+    background-color: white;
+  }
+
+  .navbar,
+  .no-print,
+  button,
+  .control-wrapper,
+  .audio-controls,
+  .big-controls {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .worksheet-page {
+    padding: 0;
+    margin: 0;
+  }
+
+  .worksheet-print-row.page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+}

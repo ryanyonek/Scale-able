@@ -24,7 +24,14 @@ import ShowControls from "../controls/ShowControls.jsx";
 import ShowModeToggle from "../controls/ShowModeToggle.jsx";
 import { useToneScaleAudio } from "../../hooks/useToneScaleAudio.js";
 
-export default function VexFlowSheet({ config, setConfig, endpoint, variant, scaleTitle }) {
+export default function VexFlowSheet({
+  config,
+  setConfig,
+  endpoint,
+  variant,
+  scaleTitle,
+  renderMode = "editor"
+}) {
 
   // ✅ scaleData state INSIDE component
   const [scaleData, setScaleData] = useState(null);
@@ -111,10 +118,12 @@ const allNotes =
       ].map(note => formatForTone(note))
     : [];
 
+  const isPrintMode = renderMode === "print";
+
   return (
     <div>
       <div className="app-container">
-        {variant === "original" && 
+        {!isPrintMode && variant === "original" && 
           <ShowControls 
             value={showControls}
             onChange={(value) =>
@@ -122,7 +131,7 @@ const allNotes =
             }
           />
         }
-        {variant === "original" && showControls && (
+        {!isPrintMode && variant === "original" && showControls && (
         
         <div className="control-wrapper">
         
@@ -224,7 +233,7 @@ const allNotes =
 
         
 
-        {variant === "transpose" && (
+        {!isPrintMode && variant === "transpose" && (
           <TranspositionSelect 
           value={transpositionKey}
           onChange={(value) =>
@@ -235,7 +244,7 @@ const allNotes =
 
         <h2 className="scale-title">{scaleTitle}</h2>
 
-        <div className="scale-name-wrapper">
+        { !isPrintMode && <div className="scale-name-wrapper">
           <ScaleNameDisplay 
             selectedScale={scale}
             selectedTonic={
@@ -246,12 +255,12 @@ const allNotes =
             selectedMode={mode}
             showMode={showMode}
           />
-        </div>
+        </div>}
           <VexFlowRenderer
             scaleData={scaleData}
             options={options}
           />
-          {variant == "original" &&
+          {!isPrintMode && variant == "original" &&
           <div className="audio-controls">
             <button
               onClick={() => play(allNotes, tempo, volume)}
