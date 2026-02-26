@@ -13,7 +13,7 @@ export function renderScale({ context, scaleData, options }) {
     if (!scaleData) return;
 
     const { key, firstMeasure, secondMeasure } = scaleData;
-    const { clef } = options;
+    const { clef, measureSize } = options;
 
     const LYRIC_Y = 10;
 
@@ -24,7 +24,7 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 1
     // -------------------------
     if (firstMeasure?.notes?.length) {
-      stave1 = new Stave(20, 40, 580);
+      stave1 = new Stave(20, 40, measureSize);
       stave1.addClef(clef);
       stave1.addKeySignature(key);
       stave1.setContext(context).draw();
@@ -34,7 +34,7 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 2
     // -------------------------
     if (secondMeasure?.notes?.length) {
-      stave2 = new Stave(600, 40, 580);
+      stave2 = new Stave(measureSize + 20, 40, measureSize);
       stave2
         .setContext(context)
         .setEndBarType(Barline.type.DOUBLE)

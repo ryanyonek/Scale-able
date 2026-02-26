@@ -16,6 +16,7 @@ export default function Transpose() {
     octaveShift: "current",
     transpositionKey: "C",
     showControls: false,
+    measureSize: 580
   });
 
   return (

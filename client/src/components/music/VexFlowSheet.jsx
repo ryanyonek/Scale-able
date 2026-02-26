@@ -7,22 +7,28 @@ import {
   transpositionKeys
 } from "../../../../server/services/theory/constants.js";
 
-import VexFlowRenderer from "./VexFlowRenderer";
-import ScaleSelect from "../controls/ScaleSelect";
-import ClefSelect from "../controls/ClefSelect";
-import AllAccidentalsToggle from "../controls/AllAccidentalsToggle";
-import CourtesyAccidentalsToggle from "../controls/CourtesyAccidentalsToggle";
-import DirectionSelect from "../controls/DirectionSelect";
-import ModeSelect from "../controls/ModeSelect";
-import LyricsSelect from "../controls/LyricsSelect";
-import NoteLabelsToggle from "../controls/NoteLabelsToggle";
-import TonicSelect from "../controls/TonicSelect";
+import VexFlowRenderer from "./VexFlowRenderer.jsx";
+import ScaleSelect from "../controls/ScaleSelect.jsx";
+import ClefSelect from "../controls/ClefSelect.jsx";
+import AllAccidentalsToggle from "../controls/AllAccidentalsToggle.jsx";
+import CourtesyAccidentalsToggle from "../controls/CourtesyAccidentalsToggle.jsx";
+import DirectionSelect from "../controls/DirectionSelect.jsx";
+import ModeSelect from "../controls/ModeSelect.jsx";
+import LyricsSelect from "../controls/LyricsSelect.jsx";
+import NoteLabelsToggle from "../controls/NoteLabelsToggle.jsx";
+import TonicSelect from "../controls/TonicSelect.jsx";
 import ScaleNameDisplay from "../ui/ScaleNameDisplay";
-import TranspositionSelect from "../controls/TranspositionSelect";
-import OctaveSelect from "../controls/OctaveSelect";
+import TranspositionSelect from "../controls/TranspositionSelect.jsx";
+import OctaveSelect from "../controls/OctaveSelect.jsx";
 import ShowControls from "../controls/ShowControls.jsx";
 import ShowModeToggle from "../controls/ShowModeToggle.jsx";
 import { useToneScaleAudio } from "../../hooks/useToneScaleAudio.js";
+import AudioVolumeSlider from "../controls/AudioVolumeSlider.jsx"
+import AudioTempoSelect from "../controls/AudioTempoSelect.jsx"
+import AudioStopButton from "../controls/AudioStopButton.jsx"
+import AudioPlayButton from "../controls/AudioPlayButton.jsx"
+ 
+
 
 export default function VexFlowSheet({
   config,
@@ -30,7 +36,7 @@ export default function VexFlowSheet({
   endpoint,
   variant,
   scaleTitle,
-  renderMode = "editor"
+  renderMode
 }) {
 
   // ✅ scaleData state INSIDE component
@@ -50,12 +56,13 @@ export default function VexFlowSheet({
     lyric,
     octaveShift,
     transpositionKey,
-    showControls
+    showControls,
+    measureSize
   } = config ;
 
   const options = config;
 
-  const { play, stop, setVolume } = useToneScaleAudio();
+  const { play, stop } = useToneScaleAudio();
   const [tempo, setTempo] = useState(1);
   const [volume, setVolumeState] = useState(-20); // dB
 
@@ -121,8 +128,8 @@ const allNotes =
   const isPrintMode = renderMode === "print";
 
   return (
-    <div>
-      <div className="app-container">
+    <div className="app-container">
+      <div>
         {!isPrintMode && variant === "original" && 
           <ShowControls 
             value={showControls}
@@ -231,8 +238,6 @@ const allNotes =
           
         </div> )}
 
-        
-
         {!isPrintMode && variant === "transpose" && (
           <TranspositionSelect 
           value={transpositionKey}
@@ -243,8 +248,8 @@ const allNotes =
         />)}
 
         <h2 className="scale-title">{scaleTitle}</h2>
-
-        { !isPrintMode && <div className="scale-name-wrapper">
+        <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
+          { !isPrintMode && <div className="scale-name-wrapper">
           <ScaleNameDisplay 
             selectedScale={scale}
             selectedTonic={
@@ -260,46 +265,27 @@ const allNotes =
             scaleData={scaleData}
             options={options}
           />
-          {!isPrintMode && variant == "original" &&
+        </div>
+          { measureSize === 580 && variant == "original" &&
           <div className="audio-controls">
-            <button
-              onClick={() => play(allNotes, tempo, volume)}
-            >
-              Play
-            </button>
+            <AudioPlayButton 
+              allNotes={allNotes}
+              tempo={tempo}
+              volume={volume}
+              onChange={play}
+            />
+            <AudioStopButton 
+              onChange={stop}
+            />
 
-            <button onClick={stop}>
-              Stop
-            </button>
-
-            <label>
-              <select
-                value={tempo}
-                onChange={(e) => {
-                  const val = Number(e.target.value);
-                  setTempo(val);
-                }}
-              >
-                <option value={0.5}>0.5x</option>
-                <option value={0.75}>0.75x</option>
-                <option value={1}>1x</option>
-                <option value={1.25}>1.25x</option>
-                <option value={1.5}>1.5x</option>
-                <option value={2}>2x</option>
-              </select>
-            </label>
-
-            <label className="volume-slider">
-              Volume:{" "}
-              <input
-                type="range"
-                min="-30"
-                max="0"
-                step="1"
-                value={volume}
-                onChange={(e) => setVolumeState(Number(e.target.value))}
-              />
-            </label>
+            <AudioTempoSelect 
+              tempo={tempo}
+              onChange={setTempo}
+            />
+            <AudioVolumeSlider 
+              volume={volume}
+              onChange={setVolumeState}
+            />
           </div>}
       </div>
     </div>

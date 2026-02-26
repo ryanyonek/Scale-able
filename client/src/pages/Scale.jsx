@@ -16,6 +16,7 @@ export default function Scale() {
     octaveShift: "current",
     transpositionKey: "C",
     showControls: true,
+    measureSize: 580
   });
 
   return (

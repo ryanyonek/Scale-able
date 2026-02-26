@@ -15,6 +15,7 @@ const defaultScaleConfig = {
   octaveShift: "current",
   transpositionKey: "C",
   showControls: true,
+  measureSize: 480
 };
 
 function createWorksheetScale(id) {
@@ -59,8 +60,8 @@ export default function Worksheet() {
 
   return (
     <>
-      <h2 className="page-title">Worksheet Generator</h2>
-            <button onClick={addScaleRow}>Add Scale</button>
+      <h1 className="page-title">Worksheet Generator</h1>
+      <button onClick={addScaleRow}>Add Scale</button>
 
       {worksheetScales.map((scaleRow) => (
         <div key={scaleRow.id}>
@@ -75,27 +76,29 @@ export default function Worksheet() {
           />
         </div>
       ))}
-
       <section className="worksheet-page">
         <div className="worksheet-editor no-print">
           <button type="button" onClick={() => window.print()}>
             Print Worksheet
           </button>
+        </div>
 
-          <div className="worksheet-list">
-            {worksheetScales.map((row) => (
-              <article key={row.id} className="worksheet-row-card">
-                <VexFlowSheet
-                  config={row.config}
-                  setConfig={(updater) => updateRowConfig(row.id, updater)}
-                  endpoint={row.endpoint}
-                  variant={row.variant}
-                  scaleTitle={row.title}
-                  renderMode="print"
-                />
-              </article>
-            ))}
-          </div>
+        <div className="worksheet-print print-only" aria-hidden="true">
+          {worksheetScales.map((row, index) => (
+            <section
+              key={`${row.id}-print`}
+              className={`worksheet-print-row ${index < worksheetScales.length - 1 ? "page-break" : ""}`}
+            >
+              <VexFlowSheet
+                config={row.config}
+                setConfig={() => {}}
+                endpoint={row.endpoint}
+                variant={row.variant}
+                scaleTitle={row.title}
+                renderMode="print"
+              />
+            </section>
+          ))}
         </div>
       </section>
     </>

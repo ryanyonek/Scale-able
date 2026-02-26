@@ -3,7 +3,7 @@ import cors from "cors";
 
 import scaleRouter from "./routes/scale.js";
 import transposeRouter from "./routes/transpose.js";
-import exportRouter from "./routes/export.js";
+import worksheetRouter from "./routes/worksheet.js";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use("/api/scale", scaleRouter);
 app.use("/api/transpose", transposeRouter);
-app.use("/api/export", exportRouter);
+app.use("/api/worksheet", worksheetRouter);
 
 const PORT = 5000;
 
