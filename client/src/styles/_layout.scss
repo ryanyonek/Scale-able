@@ -18,11 +18,18 @@ html, body {
 
 .navlink {
   padding-top: 0rem;
+  color: black;
+  text-decoration: none;
+}
+
+.active-link {
+  text-decoration: underline;
+  font-weight: 600;
 }
 
 .logo {
   border: 1px solid black;
-  height: 1.5rem;
+  height: 2.0rem;
 }
 
 .page-title {
