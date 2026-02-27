@@ -11,6 +11,9 @@ export function transposeTonic(tonic, key, scale) {
   
   let index = 0;
   let keys = [];
+  let octaveOffset = 0;
+
+  
 
   // assigning a number to the key
   if (chromaticFlatKeys.indexOf(tonic) !== -1) {

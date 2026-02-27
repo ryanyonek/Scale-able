@@ -8,7 +8,7 @@ router.post("/", (req, res) => {
   try {
     const config = req.body;
 
-    //console.log(`Config Requested: ${config}`);
+    //console.log(`Config Requested: ${req.body}`);
 
     const key = config.transpositionKey;
 

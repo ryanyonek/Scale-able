@@ -26,6 +26,7 @@ html, body {
 .active-link {
   text-decoration: underline;
   font-weight: 600;
+  background-color: vars.$color-bg;
 }
 
 .logo {
