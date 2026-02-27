@@ -89,14 +89,14 @@ body {
 }
 
 .app-container {
-  max-width: 1200px;
+  width: min(100%, 75rem);
   margin: 0 auto 0 auto;
   padding-bottom: 1.0rem;
   //border: 1px solid black;
 }
 
 .small-app-container {
-  max-width: 1000px;
+  width: min(100%, 62.5rem);
   margin: 0 auto 0 auto;
   padding-bottom: 1.0rem;
   //border: 1px solid black;

@@ -32,7 +32,7 @@
   margin-top: 0.5rem;
   padding-top: 0.5rem;
   text-align: center;
-  font-size: 16pt;
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
   font-weight: bold;
   //border-top: 1px solid black;
   //border-left: 1px solid black;
@@ -44,7 +44,7 @@
 select, button {
   padding: 0.6rem 0.8rem;
   margin-top: 0.5rem;
-  border-radius: 4pt;
+  border-radius: 0.375rem;
   border: 1px solid black;
   font-size: 0.95rem;
   background-color: white;
@@ -64,7 +64,7 @@ select, button {
 }
 
 .big-controls {
-  font-size: 14pt;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
 
 .audio-controls {
@@ -78,7 +78,6 @@ select, button {
 @media (max-width: 768px) {
   .control-panel {
     width: 100%;
-    min-width: 0;
     padding: 0.75rem;
   }
 
@@ -101,8 +100,9 @@ select, button {
 
 @media (max-width: 640px) {
   .control-panel {
-    min-width: 0;
     padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
   }
   
   .control-wrapper {
