@@ -8,6 +8,7 @@ export function buildScaleData({
   clef,
   octaveShift,
   directionMode,
+  octaveTranspose = 0
 }) {
 
     //console.log("buildScaleData received:", arguments[0]);
@@ -96,9 +97,9 @@ export function buildScaleData({
     // --- Octave assignment ---
     const octaveOffset = getOctaveOffset();
 
-    const startingOctave = (clef === "treble" ? 2 : 1) + octaveOffset;
-    const firstMeasureNotes = assignOctavesAscending(firstMeasureNotesRaw, startingOctave);
-    const secondMeasureNotes = assignOctavesDescending(secondMeasureNotesRaw, startingOctave + 1); //
+    const adjustedStartingOctave = (clef === "treble" ? 2 : 1) + octaveOffset + octaveTranspose;
+    const firstMeasureNotes = assignOctavesAscending(firstMeasureNotesRaw, adjustedStartingOctave);
+    const secondMeasureNotes = assignOctavesDescending(secondMeasureNotesRaw, adjustedStartingOctave + 1);
 
     return {
         key,

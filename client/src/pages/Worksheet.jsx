@@ -60,12 +60,13 @@ export default function Worksheet() {
 
   return (
     <>
-      <h1 className="page-title">Worksheet Generator</h1>
-      <button onClick={addScaleRow}>Add Scale</button>
-
+      <div>
+        <h1 className="page-title">Worksheet Generator</h1>
+        <button className="button-padding" onClick={addScaleRow}>Add Scale</button>
+      </div>
       {worksheetScales.map((scaleRow) => (
         <div key={scaleRow.id}>
-          <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
+          <button className="button-padding" onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
 
           <VexFlowSheet
             config={scaleRow.config}

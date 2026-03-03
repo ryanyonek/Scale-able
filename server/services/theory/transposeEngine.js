@@ -1,4 +1,26 @@
-import { chromaticFlatKeys, chromaticSharpKeys, transpositionMap, majorKeys, minorKeys } from "./constants.js";
+import { chromaticFlatKeys, chromaticSharpKeys, majorKeys, minorKeys } from "./constants.js";
+
+function parseTranspositionToken(token) {
+  const match = token?.match(/^([A-G](?:b|#)?)([+-])?$/);
+
+  if (!match) {
+    throw new Error("Invalid transposition");
+  }
+
+  const [, targetKey, directionSymbol] = match;
+
+  let octaveDirection = 0;
+  if (directionSymbol === "+") {
+    octaveDirection = -1;
+  } else if (directionSymbol === "-") {
+    octaveDirection = 1;
+  }
+
+  return {
+    targetKey,
+    octaveDirection
+  };
+}
 
 export function transposeTonic(tonic, key, scale) {
   //console.log(`Tonic: ${tonic}`);
@@ -9,7 +31,7 @@ export function transposeTonic(tonic, key, scale) {
   //console.log(`Concert pitch key: ${tonic}`)
   //console.log(`Scale: ${scale}`)
   
-  let index = 0;
+  let index = -1;
   let keys = [];
   let octaveOffset = 0;
 
@@ -26,14 +48,23 @@ export function transposeTonic(tonic, key, scale) {
 
   //console.log(`Keys after index assignment: ${keys}`)
 
-  // transposing operation
-  const interval = transpositionMap[key];
-
-  if (index === -1 || interval === undefined) {
+  if (index === -1) {
     throw new Error("Invalid transposition");
   }
 
-  const newIndex = (index + interval + 12) % 12;
+  const { targetKey, octaveDirection } = parseTranspositionToken(key);
+  const targetKeyIndex = chromaticFlatKeys.indexOf(targetKey) !== -1
+    ? chromaticFlatKeys.indexOf(targetKey)
+    : chromaticSharpKeys.indexOf(targetKey);
+
+  if (targetKeyIndex === -1) {
+    throw new Error("Invalid transposition");
+  }
+
+  const semitoneClassShift = (12 - targetKeyIndex) % 12;
+  const octaveShiftSteps = octaveDirection;
+
+  const newIndex = (index + semitoneClassShift + 12) % 12;
 
   if (minorKeys.indexOf(keys[newIndex]) === -1 && scale !== "Major") {
     if (keys === chromaticFlatKeys) {
@@ -49,5 +80,8 @@ export function transposeTonic(tonic, key, scale) {
     }
   }
 
-  return keys[newIndex];
+    return {
+    newTonic: keys[newIndex],
+    octaveTranspose: octaveShiftSteps
+  };
 }

@@ -14,7 +14,7 @@ router.post("/", (req, res) => {
 
     //console.log(`Transposition key: ${key}`);
 
-    const newTonic = transposeTonic(config.tonic, key, config.scale);
+    const { newTonic, octaveTranspose } = transposeTonic(config.tonic, key, config.scale);
 
     const newConfig = {
       ...config,
@@ -24,7 +24,8 @@ router.post("/", (req, res) => {
     const scale = generateScale(newConfig);
 
     res.json({...scale,
-      tonic: newTonic
+      tonic: newTonic,
+      octaveTranspose
   });
 
   } catch (err) {
