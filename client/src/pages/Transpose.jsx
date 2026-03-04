@@ -20,7 +20,7 @@ export default function Transpose() {
   });
 
   return (
-    <>
+    <div className="body-wrapper">
       <h1  className="page-title">Transpose Scales</h1>
 
       <VexFlowSheet
@@ -39,7 +39,7 @@ export default function Transpose() {
         variant="transpose"
         scaleTitle="Written Pitch (Transposed)"
       />
-    </>
+    </div>
   );
 }
 

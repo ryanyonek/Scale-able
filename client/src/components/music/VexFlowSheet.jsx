@@ -248,23 +248,26 @@ const allNotes =
         />)}
 
         <h2 className="scale-title">{scaleTitle}</h2>
-        <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
-          { !isPrintMode && <div className="scale-name-wrapper">
-          <ScaleNameDisplay 
-            selectedScale={scale}
-            selectedTonic={
-              variant === "transpose"
-                ? scaleData?.tonic
-                : tonic
-            }
-            selectedMode={mode}
-            showMode={showMode}
-          />
-        </div>}
-          <VexFlowRenderer
-            scaleData={scaleData}
-            options={options}
-          />
+        <div className="sheet-music-wrapper">
+          <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
+            { !isPrintMode && <div className="scale-name-wrapper">
+            <ScaleNameDisplay 
+              selectedScale={scale}
+              selectedTonic={
+                variant === "transpose"
+                  ? scaleData?.tonic
+                  : tonic
+              }
+              selectedMode={mode}
+              showMode={showMode}
+            />
+          </div>}
+            
+              <VexFlowRenderer
+                scaleData={scaleData}
+                options={options}
+              />
+            </div>
         </div>
           { measureSize === 580 && variant == "original" &&
           <div className="audio-controls">

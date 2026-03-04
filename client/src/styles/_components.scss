@@ -20,6 +20,7 @@
   justify-content: left;
   flex-wrap: nowrap;
   gap: 0.5rem;
+  width: 100%;
   //border: 1px solid black;
 }
 
@@ -74,7 +75,6 @@ select, button {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  justify-content: center;
   align-items: center;
 }
 
@@ -82,11 +82,13 @@ select, button {
   .control-panel {
     width: 100%;
     padding: 0.75rem;
+    min-width: 150px;
   }
 
   .control-wrapper {
     flex-wrap: wrap;
     gap: 0.75rem;
+    width: 80%;
   }
 
   .audio-controls {
@@ -110,19 +112,18 @@ select, button {
   
   .control-wrapper {
     flex-direction: column;
-    align-items: stretch;
     gap: 0.85rem;
+    width: 80%;
   }
 
   .audio-controls {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
     gap: 0.85rem;
+    align-items: center;
   }
 
   select,
   button {
-    width: 100%;
     margin-top: 0.75rem;
     padding: 0.8rem 0.9rem;
     &:hover {

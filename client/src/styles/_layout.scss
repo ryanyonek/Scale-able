@@ -13,7 +13,7 @@ html, body {
   //align-items: center;
   justify-content: left;
   flex-wrap: nowrap;
-  height: 4rem;
+  height: auto;
 }
 
 .navlink {
@@ -27,7 +27,9 @@ html, body {
   &:hover {
       background-color: vars.$color-hover; // Color when hovered
       border: 1px solid black;
+      font-weight: 600;
   }
+  white-space: nowrap;
 }
 
 .active-link {
@@ -46,8 +48,9 @@ html, body {
   padding-left: 0.5rem;
 }
 
-.button-padding {
-  margin-left: 1rem;
+.body-wrapper {
+  margin: 0 1rem 0 1rem;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

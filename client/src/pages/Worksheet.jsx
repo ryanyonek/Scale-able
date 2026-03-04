@@ -14,7 +14,7 @@ const defaultScaleConfig = {
   lyric: "Note Names",
   octaveShift: "current",
   transpositionKey: "C",
-  showControls: true,
+  showControls: false,
   measureSize: 480
 };
 
@@ -59,14 +59,14 @@ export default function Worksheet() {
   }
 
   return (
-    <>
+    <div className="body-wrapper">
       <div>
         <h1 className="page-title">Worksheet Generator</h1>
-        <button className="button-padding" onClick={addScaleRow}>Add Scale</button>
+        <button onClick={addScaleRow}>Add Scale</button>
       </div>
       {worksheetScales.map((scaleRow) => (
         <div key={scaleRow.id}>
-          <button className="button-padding" onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
+          <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
 
           <VexFlowSheet
             config={scaleRow.config}
@@ -102,6 +102,6 @@ export default function Worksheet() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }
