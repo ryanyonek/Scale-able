@@ -1,29 +1,28 @@
 @use 'variables' as vars;
 
 html, body {
-  margin: 0rem;
+  margin: 0;
   padding: 0;
 }
 
 .navbar {
-  font-size: 1.5rem;
+  font-size: 24pt;
   display: flex;
   border-bottom: 2px solid black;
   background-color: white;
-  //align-items: center;
   justify-content: left;
-  flex-wrap: nowrap;
   height: auto;
 }
 
 .navlink {
+  border: 1px solid black;
   color: black;
   text-decoration: none;
   transition: background-color 0.3s ease; // Smooth transition effect
-  padding: 1rem;
+  justify-content: center;
+  padding: 1.2rem;
   cursor: pointer;
-  margin: 0 0.5rem 0 0.5rem;
-  border: 1px solid white;
+  //margin: 0 0.5rem 0 0.5rem;
   &:hover {
       background-color: vars.$color-hover; // Color when hovered
       border: 1px solid black;
@@ -35,13 +34,20 @@ html, body {
 .active-link {
   font-weight: 600;
   background-color: vars.$color-bg;
-  border-color: vars.$color-bg
+  border-color: vars.$color-bg;
+  border: 1px solid black;
+}
+
+img {
+  padding: 0;
+  margin: 0;
 }
 
 .logo {
-  //border: 1px solid black;
-  height: 4rem;
+  border: 1px solid black;
+  height: 5rem;
   margin-right: 3rem;
+  display: flex;
 }
 
 .page-title {
@@ -57,9 +63,7 @@ html, body {
   .navbar {
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
-    font-size: 1.2rem;
     justify-content: center;
-    padding: 0.75rem 0.75rem 0.5rem;
   }
 
   .navlink {
@@ -70,7 +74,6 @@ html, body {
   }
 
   .logo {
-    height: 1.8rem;
     flex: 0 0 auto;
   }
 }
