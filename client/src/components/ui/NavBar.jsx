@@ -5,7 +5,9 @@ import Worksheet from "../../pages/Worksheet.jsx";
 import Logo from "./Logo.jsx";
 import Links from "./Links.jsx";
 
-
+function openNav() {
+    console.log("Menu clicked");
+}
 
 export default function NavBar() {
     return (
@@ -14,7 +16,7 @@ export default function NavBar() {
                 <Logo />
                 <Links />
                 {/* Empty spacer div to balance the logo's width */}
-                <div className="spacer"></div>
+                <span onClick={openNav()} className="menu">☰</span>
             </nav>
 
             <Routes>

@@ -129,7 +129,6 @@ const allNotes =
 
   return (
     <div className="app-container">
-      <div>
         {!isPrintMode && variant === "original" && 
           <ShowControls 
             value={showControls}
@@ -140,7 +139,7 @@ const allNotes =
         }
         {!isPrintMode && variant === "original" && showControls && (
         
-        <div className="control-wrapper">
+        <div className="controls-container">
         
           <div className="control-panel">
             <TonicSelect 
@@ -236,61 +235,59 @@ const allNotes =
             />
           </div>
           
-        </div> )}
+        </div> )}     
+      {!isPrintMode && variant === "transpose" && (
+        <TranspositionSelect 
+        value={transpositionKey}
+        onChange={(value) =>
+          setConfig(prev => ({ ...prev, transpositionKey: value }))
+        }
+        keys={transpositionKeys}
+      />)}
 
-        {!isPrintMode && variant === "transpose" && (
-          <TranspositionSelect 
-          value={transpositionKey}
-          onChange={(value) =>
-            setConfig(prev => ({ ...prev, transpositionKey: value }))
-          }
-          keys={transpositionKeys}
-        />)}
-
-        <h2 className="scale-title">{scaleTitle}</h2>
-        <div className="sheet-music-wrapper">
-          <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
-            { !isPrintMode && <div className="scale-name-wrapper">
-            <ScaleNameDisplay 
-              selectedScale={scale}
-              selectedTonic={
-                variant === "transpose"
-                  ? scaleData?.tonic
-                  : tonic
-              }
-              selectedMode={mode}
-              showMode={showMode}
+      <h2 className="scale-title">{scaleTitle}</h2>
+      <div className="sheet-music-wrapper">
+        <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
+          { !isPrintMode && <div className="scale-name-wrapper">
+          <ScaleNameDisplay 
+            selectedScale={scale}
+            selectedTonic={
+              variant === "transpose"
+                ? scaleData?.tonic
+                : tonic
+            }
+            selectedMode={mode}
+            showMode={showMode}
+          />
+        </div>}
+          
+            <VexFlowRenderer
+              scaleData={scaleData}
+              options={options}
             />
-          </div>}
-            
-              <VexFlowRenderer
-                scaleData={scaleData}
-                options={options}
-              />
-            </div>
-        </div>
-          { measureSize === 580 && variant == "original" &&
-          <div className="audio-controls">
-            <AudioPlayButton 
-              allNotes={allNotes}
-              tempo={tempo}
-              volume={volume}
-              onChange={play}
-            />
-            <AudioStopButton 
-              onChange={stop}
-            />
-
-            <AudioTempoSelect 
-              tempo={tempo}
-              onChange={setTempo}
-            />
-            <AudioVolumeSlider 
-              volume={volume}
-              onChange={setVolumeState}
-            />
-          </div>}
+          </div>
       </div>
+        { measureSize === 580 && variant == "original" &&
+        <div className="audio-controls">
+          <AudioPlayButton 
+            allNotes={allNotes}
+            tempo={tempo}
+            volume={volume}
+            onChange={play}
+          />
+          <AudioStopButton 
+            onChange={stop}
+          />
+
+          <AudioTempoSelect 
+            tempo={tempo}
+            onChange={setTempo}
+          />
+          <AudioVolumeSlider 
+            volume={volume}
+            onChange={setVolumeState}
+          />
+        </div>}
     </div>
   );
 }
