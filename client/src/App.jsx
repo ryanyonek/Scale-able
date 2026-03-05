@@ -1,7 +1,7 @@
-import ScaleHeader from "./components/ui/ScaleHeader.jsx";
+import NavBar from "./components/ui/NavBar.jsx";
 
 export default function App() {
   return (
-    <ScaleHeader />
+    <NavBar />
   );
 }
