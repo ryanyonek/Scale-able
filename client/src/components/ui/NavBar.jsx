@@ -44,14 +44,18 @@ export default function NavBar() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
     return (
         <BrowserRouter style={{display: 'contents'}}>
             <nav className="navbar">
                 <Logo />
-                <span onClick={toggleNav} className="menu">☰</span>
+                {windowSize <= 480 && 
+                    <span onClick={toggleNav} className="menu">☰</span>
+                }
                 {toggleMenu &&
                     <MobileLinks 
                         mobileLinksStyle={mobileLinksStyle}
+                        onClick={toggleNav}
                     />
                 }
                 {windowSize > 480 &&
