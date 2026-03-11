@@ -48,11 +48,14 @@ export default function NavBar() {
     return (
         <BrowserRouter style={{display: 'contents'}}>
             <nav className="navbar">
-                <Logo />
+                <Logo 
+                    onClick={toggleNav}
+                    toggleMenu={toggleMenu}
+                />
                 {windowSize <= 480 && 
                     <span onClick={toggleNav} className="menu">☰</span>
                 }
-                {toggleMenu &&
+                {windowSize <= 480 && toggleMenu &&
                     <MobileLinks 
                         mobileLinksStyle={mobileLinksStyle}
                         onClick={toggleNav}
