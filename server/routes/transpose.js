@@ -18,14 +18,15 @@ router.post("/", (req, res) => {
 
     const newConfig = {
       ...config,
-      tonic: newTonic
+      tonic: newTonic,
+      octaveTranspose: octaveTranspose
     };
 
     const scale = generateScale(newConfig);
 
     res.json({...scale,
       tonic: newTonic,
-      octaveTranspose
+      octaveTranspose: octaveTranspose
   });
 
   } catch (err) {

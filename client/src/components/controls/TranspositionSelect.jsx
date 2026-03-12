@@ -2,7 +2,7 @@ export default function TranspositionSelect({ value, onChange, keys }) {
   return (
     <div className="scale-control">
       <label className="big-controls">
-        <b>Select Key of Transposition:{" "}</b>
+        <b>Select Transposition:{" "}</b>
         <select
           className="amethysta-regular"
           value={value}

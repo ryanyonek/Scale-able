@@ -57,7 +57,7 @@ export default function VexFlowSheet({
     octaveShift,
     transpositionKey,
     showControls,
-    measureSize
+    measureSize,
   } = config ;
 
   const options = config;

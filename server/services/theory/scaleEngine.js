@@ -11,8 +11,7 @@ export function buildScaleData({
   octaveTranspose = 0
 }) {
 
-    //console.log("buildScaleData received:", arguments[0]);
-    // --- Helpers ---
+    console.log(`Current tonic: ${tonic}`);
     const scaleName = `${tonic} ${scale}`;
     const foundScale = scales.find((s) => s.name === scaleName);
     if (!foundScale) {
@@ -24,29 +23,31 @@ export function buildScaleData({
 
     // --- Helper: Assign octaves for ascending sequences ---
     const assignOctavesAscending = (notesArray, startingOctave) => {
-        let octave = startingOctave;
+        let octave = startingOctave + octaveTranspose;
         let lastIndex = null;
         return notesArray.map((note) => {
-        const base = note.split("/")[0];
-        const pitchIndex = diatonicOrder.indexOf(base[0]);
-        if (lastIndex !== null && pitchIndex < lastIndex) {
-            octave++; // wrap from B -> C
-        }
-        lastIndex = pitchIndex;
-        return `${base}/${octaveLevels[octave]}`;
+            const base = note.split("/")[0];
+            const pitchIndex = diatonicOrder.indexOf(base[0]);
+            if (lastIndex !== null && pitchIndex < lastIndex) {
+                octave++; // wrap from B -> C
+            }
+            lastIndex = pitchIndex;
+            return `${base}/${octaveLevels[octave]}`;
         });
     };
 
     // --- Helper: Assign octaves for descending sequences ---
     const assignOctavesDescending = (notesArray, startingOctave) => {
-        let octave = startingOctave;
+        let octave = startingOctave + octaveTranspose;
         let lastIndex = null;
         return notesArray.map((note) => {
-        const base = note.split("/")[0];
-        const pitchIndex = diatonicOrder.indexOf(base[0]);
-        if (lastIndex !== null && pitchIndex > lastIndex) octave--; // wrap from C -> B
-        lastIndex = pitchIndex;
-        return `${base}/${octaveLevels[octave]}`;
+            const base = note.split("/")[0];
+            const pitchIndex = diatonicOrder.indexOf(base[0]);
+            if (lastIndex !== null && pitchIndex > lastIndex) {
+                octave--; // wrap from C -> B
+            }
+            lastIndex = pitchIndex;
+            return `${base}/${octaveLevels[octave]}`;
         });
     };
 
@@ -97,7 +98,9 @@ export function buildScaleData({
     // --- Octave assignment ---
     const octaveOffset = getOctaveOffset();
 
-    const adjustedStartingOctave = (clef === "treble" ? 2 : 1) + octaveOffset + octaveTranspose;
+    console.log(`Octave transpose offset: ${octaveTranspose}`);
+
+    const adjustedStartingOctave = (clef === "treble" ? 2 : 1) + octaveOffset;
     const firstMeasureNotes = assignOctavesAscending(firstMeasureNotesRaw, adjustedStartingOctave);
     const secondMeasureNotes = assignOctavesDescending(secondMeasureNotesRaw, adjustedStartingOctave + 1);
 

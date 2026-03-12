@@ -15,7 +15,8 @@ const defaultScaleConfig = {
   octaveShift: "current",
   transpositionKey: "C",
   showControls: false,
-  measureSize: 480
+  measureSize: 480,
+  octaveTranspose: 0
 };
 
 function createWorksheetScale(id) {

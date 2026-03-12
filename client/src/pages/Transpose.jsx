@@ -14,9 +14,10 @@ export default function Transpose() {
     showNoteLabels: true,
     lyric: "Note Names",
     octaveShift: "current",
-    transpositionKey: "C",
+    transpositionKey: "0: C",
     showControls: false,
-    measureSize: 580
+    measureSize: 580,
+    octaveTranspose: 0
   });
 
   return (
