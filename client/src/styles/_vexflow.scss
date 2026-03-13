@@ -19,19 +19,3 @@ svg {
   margin: 0rem;
   background-color: white;
 }
-
-@media (max-width: 768px) {
-  svg {
-    background-color: white;
-    width: auto;  
-  }
-}
-
-@media (max-width: 480px) {
-  svg {
-    width: auto;   
-    background-color: white;
-    //transform: scale(0.74, 0.74);
-    //transform-origin: top left;
-  }
-}

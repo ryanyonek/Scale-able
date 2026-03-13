@@ -13,9 +13,9 @@ export function renderScale({ context, scaleData, options }) {
     if (!scaleData) return;
 
     const { key, firstMeasure, secondMeasure } = scaleData;
-    const { clef, measureSize, containerWidth } = options;
+    const { clef, measureWidth, containerWidth, measureHeight, STAVE_SIDE_PADDING } = options;
 
-    console.log(`Measure size: ${measureSize}`);
+    console.log(`Measure width: ${measureWidth}`);
     console.log(`Container width: ${containerWidth}`);
 
     const LYRIC_Y = 10;
@@ -27,13 +27,13 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 1
     // -------------------------
     if (firstMeasure?.notes?.length) {
-      stave1 = new Stave(20, 20, measureSize);
+      stave1 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
       stave1.addClef(clef);
       stave1.addKeySignature(key);
       stave1.setContext(context).draw();
-      if (containerWidth > 840) {
+      if (containerWidth > 880) {
         stave1.setEndBarType(Barline.type.SINGLE);
-      } else if (containerWidth <= 840) {
+      } else if (containerWidth <= 880) {
         stave1.setEndBarType(Barline.type.DOUBLE);
       }
       stave1.draw();
@@ -43,19 +43,19 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 2
     // -------------------------
     if (secondMeasure?.notes?.length) {
-      if (containerWidth > 840) {
+      if (containerWidth > 880) {
         if (!firstMeasure?.notes?.length) {
-          stave2 = new Stave(20, 20, measureSize);
+          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
         } else {
-          stave2 = new Stave(measureSize + 20, 20, measureSize);
+          stave2 = new Stave(measureWidth + STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
         }
       }
-      else if (containerWidth <= 840) {
+      else if (containerWidth <= 880) {
         if (!firstMeasure?.notes?.length) {
-          stave2 = new Stave(20, 20, measureSize);
+          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
         }
         else {
-          stave2 = new Stave(20, 240, measureSize);
+          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING + measureHeight, measureWidth);
         }
         stave2.addClef(clef);
         stave2.addKeySignature(key);

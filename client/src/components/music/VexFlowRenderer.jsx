@@ -2,13 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Renderer } from "vexflow";
 import { renderScale } from "../../../lib/render/vexflowRenderer";
 
-const STAVE_SIDE_PADDING = 20;
-//const DEFAULT_MIN_MEASURE_WIDTH = 420;
-//const DEFAULT_MAX_MEASURE_WIDTH = 580;
-
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-
 export default function VexFlowRenderer({ scaleData, options }) {
   const containerRef = useRef(null);
 
@@ -55,14 +48,12 @@ export default function VexFlowRenderer({ scaleData, options }) {
       containerRef.current,
       Renderer.Backends.SVG
     );
-
-    //const minMeasureWidth = options.minMeasureSize ?? DEFAULT_MIN_MEASURE_WIDTH;
-    //const maxMeasureWidth = options.maxMeasureSize ?? DEFAULT_MAX_MEASURE_WIDTH;
+    let STAVE_SIDE_PADDING = 20;
     let availableMeasureWidth = (containerWidth - (STAVE_SIDE_PADDING * 2)) / 2;
 
-    if (containerWidth < 840) {
+    if (containerWidth < 880) {
         availableMeasureWidth = containerWidth - (STAVE_SIDE_PADDING * 2);
-    } else if (containerWidth >= 840) {
+    } else if (containerWidth >= 880) {
       if (directionMode === "both") {
         availableMeasureWidth = (containerWidth - (STAVE_SIDE_PADDING * 2)) / 2;
       } else if (directionMode === "ascending" || directionMode === "descending") {
@@ -70,25 +61,38 @@ export default function VexFlowRenderer({ scaleData, options }) {
       }
     }
 
-    const measureSize = availableMeasureWidth;
+    let measureHeight = 220;
+    if (availableMeasureWidth < 420) {
+      // need to scale the SVG down 
+      const svg = renderer.getContext().svg;
+      const scaleFactor = availableMeasureWidth / 420;
+      console.log(`Scale factor: ${scaleFactor}`);
+      svg.setAttribute("transform", `scale(${scaleFactor})`);
+      svg.setAttribute("transform-origin", "top left");
+      availableMeasureWidth = 420;
+      measureHeight = measureHeight * scaleFactor;
+      STAVE_SIDE_PADDING = STAVE_SIDE_PADDING * scaleFactor;
+    }
+    const measureWidth = availableMeasureWidth;
+
     console.log(`Container width before rendering: ${containerWidth}`);
-    console.log(`Measure size: ${measureSize}`);
+    console.log(`Measure size: ${measureWidth}`);
 
     // width and height for two measures, same line, wider window size
-    if (containerWidth > 840 && directionMode === "both") {
-      const svgWidth = (measureSize * 2) + (STAVE_SIDE_PADDING * 2);
+    if (containerWidth > 880 && directionMode === "both") {
+      const svgWidth = (measureWidth * 2) + (STAVE_SIDE_PADDING * 2);
       console.log(`SVG Width, wide window, two mm: ${svgWidth}`);
-      renderer.resize(svgWidth, 220);
-    } else if (containerWidth <= 840 && directionMode === "both") {
+      renderer.resize(svgWidth, measureHeight);
+    } else if (containerWidth <= 880 && directionMode === "both") {
       // width and height for two measures, two lines, taller window size
-      const svgWidth= measureSize + (STAVE_SIDE_PADDING * 2);
+      const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
       console.log(`SVG Width, small window, two mm: ${svgWidth}`);
-      renderer.resize(svgWidth, 420);      
+      renderer.resize(svgWidth, measureHeight * 2);      
     } else {
       // width and height for one measure, one, any window size
-      const svgWidth= measureSize + (STAVE_SIDE_PADDING * 2);
+      const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
       console.log(`SVG Width for one m: ${svgWidth}`);
-      renderer.resize(svgWidth, 220);  
+      renderer.resize(svgWidth, measureHeight);  
     }
 
     const context = renderer.getContext();
@@ -98,8 +102,10 @@ export default function VexFlowRenderer({ scaleData, options }) {
       scaleData,
       options: {
         ...options,
-        measureSize,
-        containerWidth
+        measureWidth,
+        containerWidth,
+        measureHeight,
+        STAVE_SIDE_PADDING
       }
     });
   }, [scaleData, options, directionMode, containerWidth]);

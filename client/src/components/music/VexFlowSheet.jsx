@@ -260,11 +260,10 @@ const allNotes =
             showMode={showMode}
           />
         </div>}
-          
-            <VexFlowRenderer
-              scaleData={scaleData}
-              options={options}
-            />
+          <VexFlowRenderer
+            scaleData={scaleData}
+            options={options}
+          />
           </div>
       </div>
         { measureSize === 580 && variant == "original" &&
