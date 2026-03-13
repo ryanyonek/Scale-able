@@ -1,14 +1,12 @@
 @use 'variables' as vars;
 
-svg {
-  width: auto; 
+svg { 
+  width: 100%;
   background-color: white;  
   //border-bottom: 1px solid black;
   //border-left: 1px solid black;
   //border-right: 1px solid black;
   //border: 1px solid black;
-  //transform: scale(0.8);
-  //transform-origin: top left;
   padding: 0rem;
   margin: 0rem;
   
@@ -33,6 +31,7 @@ svg {
   svg {
     width: auto;   
     background-color: white;
-    transform: scale(1, 1)
+    //transform: scale(0.74, 0.74);
+    //transform-origin: top left;
   }
 }

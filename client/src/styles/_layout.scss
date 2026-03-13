@@ -156,7 +156,6 @@ body {
 .app-container {
   width: min(100%, 75rem);
   margin: 0 auto 0 auto;
-  padding-bottom: 1.0rem;
   //border: 1px solid black;
 }
 
@@ -182,6 +181,9 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .html {
+    max-width: 1100px;
+  }
   .navbar {
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
@@ -201,6 +203,9 @@ body {
 
 
 @media (max-width: 768px) {
+  .html {
+    max-width: 768px;
+  }
   .navbar {
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
@@ -218,6 +223,9 @@ body {
 }
 
 @media (max-width: 480px) {
+  .html {
+    max-width: 480px;
+  }
   .navbar {
     align-items: center;
     justify-content: center;

@@ -13,7 +13,10 @@ export function renderScale({ context, scaleData, options }) {
     if (!scaleData) return;
 
     const { key, firstMeasure, secondMeasure } = scaleData;
-    const { clef, measureSize } = options;
+    const { clef, measureSize, containerWidth } = options;
+
+    console.log(`Measure size: ${measureSize}`);
+    console.log(`Container width: ${containerWidth}`);
 
     const LYRIC_Y = 10;
 
@@ -24,21 +27,42 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 1
     // -------------------------
     if (firstMeasure?.notes?.length) {
-      stave1 = new Stave(20, 40, measureSize);
+      stave1 = new Stave(20, 20, measureSize);
       stave1.addClef(clef);
       stave1.addKeySignature(key);
       stave1.setContext(context).draw();
+      if (containerWidth > 840) {
+        stave1.setEndBarType(Barline.type.SINGLE);
+      } else if (containerWidth <= 840) {
+        stave1.setEndBarType(Barline.type.DOUBLE);
+      }
+      stave1.draw();
     }
 
     // -------------------------
     // STAVE 2
     // -------------------------
     if (secondMeasure?.notes?.length) {
-      stave2 = new Stave(measureSize + 20, 40, measureSize);
-      stave2
-        .setContext(context)
-        .setEndBarType(Barline.type.DOUBLE)
-        .draw();
+      if (containerWidth > 840) {
+        if (!firstMeasure?.notes?.length) {
+          stave2 = new Stave(20, 20, measureSize);
+        } else {
+          stave2 = new Stave(measureSize + 20, 20, measureSize);
+        }
+      }
+      else if (containerWidth <= 840) {
+        if (!firstMeasure?.notes?.length) {
+          stave2 = new Stave(20, 20, measureSize);
+        }
+        else {
+          stave2 = new Stave(20, 240, measureSize);
+        }
+        stave2.addClef(clef);
+        stave2.addKeySignature(key);
+      } 
+      stave2.setContext(context);
+      stave2.setEndBarType(Barline.type.DOUBLE);
+      stave2.draw();
     }
 
     // -------------------------

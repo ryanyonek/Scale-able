@@ -42,7 +42,7 @@ select, button {
   padding: 0.8rem 0.8rem;
   margin-top: 0.5rem;
   border-radius: 0.375rem;
-  border: 2px solid color.adjust(black, $alpha: -0.6);
+  border: 2px solid color.adjust(black, $alpha: -0.6 );
   box-sizing: border-box;
   font-size: 0.90rem;
   background-color: white;
