@@ -1,6 +1,7 @@
 export default function TranspositionSelect({ value, onChange, keys }) {
   return (
     <div className="scale-control">
+      {/* Select the tonic/interval of the transposed staff */}
       <label className="big-controls">
         <b>Select Transposition:{" "}</b>
         <select

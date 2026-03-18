@@ -1,4 +1,4 @@
-import { useMemo,useState } from "react";
+import { useState } from "react";
 import VexFlowSheet from "../components/music/VexFlowSheet";
 
 const defaultScaleConfig = {
@@ -13,10 +13,11 @@ const defaultScaleConfig = {
   showNoteLabels: true,
   lyric: "Note Names",
   octaveShift: "current",
-  transpositionKey: "C",
+  transpositionKey: "0: C",
   showControls: false,
   measureSize: 480,
-  octaveTranspose: 0
+  octaveTranspose: 0,
+  printMode: false
 };
 
 function createWorksheetScale(id) {
@@ -26,11 +27,23 @@ function createWorksheetScale(id) {
   };
 }
 
-
+// Worksheet Generator page
 export default function Worksheet() {
   const [worksheetScales, setWorksheetScales] = useState([
     createWorksheetScale(1),
   ]);
+
+  const [printMode, setPrintMode] = useState(false);
+
+  function handleClick() {
+    //console.log("Print button clicked.");
+    setPrintMode(true);
+    window.setTimeout(() => { // Delay to ensure the rerender completes
+      window.print(); 
+    }, 100);
+    setPrintMode(false);
+  }
+
   function addScaleRow() {
     const nextId =
       worksheetScales.length > 0
@@ -61,48 +74,46 @@ export default function Worksheet() {
 
   return (
     <div className="body-wrapper">
-      <div>
-        <h1 className="page-title">Worksheet Generator</h1>
-        <button onClick={addScaleRow}>Add Scale</button>
-      </div>
-      {worksheetScales.map((scaleRow) => (
-        <div key={scaleRow.id}>
-          <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
-
-          <VexFlowSheet
-            config={scaleRow.config}
-            setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
-            endpoint="/api/scale"
-            variant="original"
-            scaleTitle={`Scale ${scaleRow.id}`}
-          />
-        </div>
-      ))}
+      <h1 className="page-title">Scale-able Worksheet</h1>
       <section className="worksheet-page">
         <div className="worksheet-editor no-print">
-          <button type="button" onClick={() => window.print()}>
-            Print Worksheet
-          </button>
+          <div className="worksheet-button-container">
+            <button onClick={addScaleRow}>Add Scale ({worksheetScales.length}{/*`Scale${worksheetScales.length > 1 ? "s" : ""}`*/})</button>
+            <button type="button" onClick={() => handleClick()}>
+              Print Worksheet
+            </button>
+          </div>
         </div>
-
-        <div className="worksheet-print print-only" aria-hidden="true">
-          {worksheetScales.map((row, index) => (
-            <section
-              key={`${row.id}-print`}
-              className={`worksheet-print-row ${index < worksheetScales.length - 1 ? "page-break" : ""}`}
-            >
+        {worksheetScales.map((scaleRow) => (
+          <div key={scaleRow.id}>
+            <VexFlowSheet
+              config={scaleRow.config}
+              setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
+              endpoint="/api/scale"
+              variant="original"
+              scaleTitle={`Scale ${scaleRow.id}`}
+            />
+            <div className="remove-button-container">
+              <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
+            </div>
+          </div>
+        ))}
+      </section>
+      {printMode && <section className="worksheet-page">
+        <div className="worksheet-editor">
+          {worksheetScales.map((scaleRow) => (
+            <div key={scaleRow.id}>
               <VexFlowSheet
-                config={row.config}
-                setConfig={() => {}}
-                endpoint={row.endpoint}
-                variant={row.variant}
-                scaleTitle={row.title}
-                renderMode="print"
+                config={scaleRow.config}
+                setConfig={() => setRowConfig(scaleRow.id, prev => ({ ...prev, printMode: printMode }))}
+                endpoint="/api/scale"
+                variant="original"
+                scaleTitle={`Scale ${scaleRow.id}`}
               />
-            </section>
+            </div>
           ))}
         </div>
-      </section>
+      </section>}
     </div>
   );
 }

@@ -6,10 +6,11 @@ export default function VexFlowRenderer({ scaleData, options }) {
   const containerRef = useRef(null);
 
   const { directionMode } = options;
-  console.log(`Asc and/or desc: ${directionMode}`);
+  //console.log(`Asc and/or desc: ${directionMode}`);
 
   const [containerWidth, setContainerWidth] = useState(0);
 
+  // Updating the window width as the size changes
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -37,10 +38,11 @@ export default function VexFlowRenderer({ scaleData, options }) {
     };
   }, []);
 
+  // checking initializations
   useEffect(() => {
     if (!containerRef.current || !scaleData || !containerWidth) return;
 
-    console.log(`Container width: ${containerWidth}`);
+    //console.log(`Container width: ${containerWidth}`);
 
     containerRef.current.innerHTML = "";
 
@@ -51,6 +53,7 @@ export default function VexFlowRenderer({ scaleData, options }) {
     let STAVE_SIDE_PADDING = 20;
     let availableMeasureWidth = (containerWidth - (STAVE_SIDE_PADDING * 2)) / 2;
 
+    // setting the width available for a measure
     if (containerWidth < 880) {
         availableMeasureWidth = containerWidth - (STAVE_SIDE_PADDING * 2);
     } else if (containerWidth >= 880) {
@@ -61,12 +64,13 @@ export default function VexFlowRenderer({ scaleData, options }) {
       }
     }
 
+
     let measureHeight = 220;
     if (availableMeasureWidth < 420) {
       // need to scale the SVG down 
       const svg = renderer.getContext().svg;
       const scaleFactor = availableMeasureWidth / 420;
-      console.log(`Scale factor: ${scaleFactor}`);
+      //console.log(`Scale factor: ${scaleFactor}`);
       svg.setAttribute("transform", `scale(${scaleFactor})`);
       svg.setAttribute("transform-origin", "top left");
       availableMeasureWidth = 420;
@@ -75,25 +79,24 @@ export default function VexFlowRenderer({ scaleData, options }) {
     }
     const measureWidth = availableMeasureWidth;
 
-    console.log(`Container width before rendering: ${containerWidth}`);
-    console.log(`Measure size: ${measureWidth}`);
+    //console.log(`Container width before rendering: ${containerWidth}`);
+    //console.log(`Measure size: ${measureWidth}`);
 
-    // width and height for two measures, same line, wider window size
+      // width and height for two measures, same line, wider window size
     if (containerWidth > 880 && directionMode === "both") {
       const svgWidth = (measureWidth * 2) + (STAVE_SIDE_PADDING * 2);
-      console.log(`SVG Width, wide window, two mm: ${svgWidth}`);
       renderer.resize(svgWidth, measureHeight);
     } else if (containerWidth <= 880 && directionMode === "both") {
       // width and height for two measures, two lines, taller window size
       const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
-      console.log(`SVG Width, small window, two mm: ${svgWidth}`);
       renderer.resize(svgWidth, measureHeight * 2);      
     } else {
       // width and height for one measure, one, any window size
       const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
-      console.log(`SVG Width for one m: ${svgWidth}`);
       renderer.resize(svgWidth, measureHeight);  
     }
+
+    
 
     const context = renderer.getContext();
 

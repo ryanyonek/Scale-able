@@ -1,7 +1,7 @@
 export default function OctaveSelect({ value, onChange }) {
   return (
-    // Octave Toggle, 8va, default, or 8vb
     <div className="scale-control">
+      {/* Dropdown to select octave, current, 8va (up), or 8vb (down) */}
       <label>
         <b>Octave:{" "}</b>
         <select

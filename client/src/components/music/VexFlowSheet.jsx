@@ -39,10 +39,10 @@ export default function VexFlowSheet({
   renderMode
 }) {
 
-  // ✅ scaleData state INSIDE component
+  // scale data state, set after fetching, sent with the renderer
   const [scaleData, setScaleData] = useState(null);
 
-  // ✅ Build options INSIDE component
+  // scale data config options
   const {
     tonic,
     scale,
@@ -62,15 +62,17 @@ export default function VexFlowSheet({
 
   const options = config;
 
+  // audio controls state
   const { play, stop } = useToneScaleAudio();
   const [tempo, setTempo] = useState(1);
   const [volume, setVolumeState] = useState(-20); // dB
 
+  // formatting note input for audio playback
   function formatForTone(note) {
     return note.replace("/", "");
   }
 
-  // ✅ Fetch scale from backend
+  // Fetch scale from server
   useEffect(() => {
     async function fetchScale() {
       try {
@@ -80,13 +82,15 @@ export default function VexFlowSheet({
           body: JSON.stringify(options),
         });
 
+        //console.log(res);
+
         if (!res.ok) {
           console.error("Scale API error:", res.status);
           return;
         }
 
         const data = await res.json();
-        console.log(`Scale Data: ${res}`)
+        //console.log(`Scale Data: ${res}`)
 
         setScaleData(data);
 
@@ -98,37 +102,34 @@ export default function VexFlowSheet({
     fetchScale();
   }, [config, endpoint]);
 
+  // From minor, if a non-major tonic is picked from the dropdown, switch to C, vice versa for minor and A
   useEffect(() => {
-  console.log("TRANS KEY:", transpositionKey);
-}, [transpositionKey]);
+    if (scale === "Major" && !majorKeys.includes(tonic)) {
+      setConfig(prev => ({
+        ...prev,
+        tonic: "C"
+      }));
+    } else if (scale !== "Major" && !minorKeys.includes(tonic)) {
+      setConfig(prev => ({
+        ...prev,
+        tonic: "A"
+      }));
+    }
+  }, [scale, tonic]);
 
-useEffect(() => {
-  if (scale === "Major" && !majorKeys.includes(tonic)) {
-    setConfig(prev => ({
-      ...prev,
-      tonic: "C"
-    }));
-  } else if (scale !== "Major" && !minorKeys.includes(tonic)) {
-    setConfig(prev => ({
-      ...prev,
-      tonic: "A"
-    }));
-  }
-}, [scale, tonic]);
-
-const allNotes =
-  scaleData?.firstMeasure?.notes &&
-  scaleData?.secondMeasure?.notes
-    ? [
-        ...scaleData.firstMeasure.notes,
-        ...scaleData.secondMeasure.notes
-      ].map(note => formatForTone(note))
-    : [];
+  const allNotes =
+    scaleData?.firstMeasure?.notes &&
+    scaleData?.secondMeasure?.notes
+      ? [
+          ...scaleData.firstMeasure.notes,
+          ...scaleData.secondMeasure.notes
+        ].map(note => formatForTone(note))
+      : [];
 
   const isPrintMode = renderMode === "print";
 
   return (
-    <div className="app-container">
+    <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
         {!isPrintMode && variant === "original" && 
           <ShowControls 
             value={showControls}

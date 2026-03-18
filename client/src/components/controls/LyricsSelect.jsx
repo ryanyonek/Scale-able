@@ -1,8 +1,7 @@
 export default function LyricsSelect({ value, onChange }) {
   return (
-    // Lyrics type selector (only when enabled)
-    
     <div className="scale-control">
+      {/* Dropdown to select type of lyrics under the noteheads */}
       <label>
         <b>Note Label:{" "}</b>
         <select

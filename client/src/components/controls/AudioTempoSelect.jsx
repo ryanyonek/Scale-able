@@ -1,6 +1,7 @@
 export default function AudioTempoSelect({ tempo, onChange }) {
   return (
     <div>
+      {/* Dropdown to select playback speed */}
         <label>
           <select
             value={tempo}

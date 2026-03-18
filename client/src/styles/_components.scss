@@ -83,6 +83,11 @@ input {
   align-items: center;
 }
 
+.remove-button-container {
+  display: flex;
+  justify-content: right;
+}
+
 @media (max-width: 768px) {
   .control-panel {
     flex: 1 0 calc(50% - 1rem);
@@ -123,8 +128,5 @@ input {
   button {
     margin-top: 0.75rem;
     padding: 0.8rem 0.9rem;
-    &:hover {
-      background-color: vars.$color-hover; // Color when hovered
-    }
   }
 }

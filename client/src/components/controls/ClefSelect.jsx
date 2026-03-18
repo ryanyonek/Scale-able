@@ -1,7 +1,7 @@
 export default function ClefSelect({ value, onChange }) {
   return (
-    // Clef Dropdown
       <div className="scale-control">
+        {/* Dropdown to select a clef */}
         <label>
           <b>Select Clef:{" "}</b>
           <select

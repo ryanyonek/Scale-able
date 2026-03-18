@@ -15,8 +15,8 @@ export function renderScale({ context, scaleData, options }) {
     const { key, firstMeasure, secondMeasure } = scaleData;
     const { clef, measureWidth, containerWidth, measureHeight, STAVE_SIDE_PADDING } = options;
 
-    console.log(`Measure width: ${measureWidth}`);
-    console.log(`Container width: ${containerWidth}`);
+    //console.log(`Measure width: ${measureWidth}`);
+    //console.log(`Container width: ${containerWidth}`);
 
     const LYRIC_Y = 10;
 

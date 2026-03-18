@@ -14,10 +14,11 @@ export default function Scale() {
     showNoteLabels: true,
     lyric: "Note Names",
     octaveShift: "current",
-    transpositionKey: "C",
-    showControls: true,
+    transpositionKey: "0: C",
+    showControls: false,
     measureSize: 580,
-    octaveTranspose: 0
+    octaveTranspose: 0,
+    printMode: false
   });
 
   return (

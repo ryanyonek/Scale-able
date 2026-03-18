@@ -1,6 +1,7 @@
 export default function AudioVolumeSlider({ volume, onChange }) {
   return (
     <div>
+        {/* Slider to adjust volume, between playbacks, not during */}
         <label className="volume-slider">
             Volume:{" "}
             <input

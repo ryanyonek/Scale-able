@@ -17,7 +17,8 @@ export default function Transpose() {
     transpositionKey: "0: C",
     showControls: false,
     measureSize: 580,
-    octaveTranspose: 0
+    octaveTranspose: 0,
+    printMode: false
   });
 
   return (

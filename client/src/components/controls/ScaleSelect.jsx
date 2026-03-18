@@ -1,6 +1,7 @@
 export default function ScaleSelect({ value, onChange, scaleTypes }) {
   return (
     <div className="scale-control">
+      {/* Dropdown to select type of scale: major, 3 minors */}
       <label>
         <b>Scale: </b> 
       </label>

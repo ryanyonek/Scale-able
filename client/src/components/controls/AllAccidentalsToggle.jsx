@@ -10,7 +10,6 @@ export default function AllAccidentalsToggle({ value, onChange }) {
         />
         <b>Show All Accidentals {" "}</b>
       </label>
-      {/* <p>Checkbox is currently: {showAllAccidentals ? 'Checked' : 'Unchecked'}</p> */}
     </div>
   );
 }

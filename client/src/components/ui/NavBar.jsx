@@ -10,7 +10,7 @@ import MobileLinks from "./MobileLinks.jsx";
 export default function NavBar() {
     function getWindowWidth() {
         const { innerWidth: width} = window;
-        console.log(`Width: ${width}`);
+        //console.log(`Width: ${width}`);
         return width
     }
 
@@ -41,7 +41,7 @@ export default function NavBar() {
         function handleResize() {
             setWindowSize(getWindowWidth());
         }
-        console.log(`Mobile Links Style: ${mobileLinksStyle}`);
+        //console.log(`Mobile Links Style: ${mobileLinksStyle}`);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -74,7 +74,7 @@ export default function NavBar() {
             <Routes>
                 <Route path="/" element={<Scale />} />
                 <Route path="/transpose" element={<Transpose />} />
-                <Route path="/worksheet-generator" element={<Worksheet />} />
+                <Route path="/worksheet" element={<Worksheet />} />
             </Routes>
         </BrowserRouter>
     )

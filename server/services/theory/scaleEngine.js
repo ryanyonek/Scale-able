@@ -11,7 +11,7 @@ export function buildScaleData({
   octaveTranspose = 0
 }) {
 
-    console.log(`Current tonic: ${tonic}`);
+    //console.log(`Current tonic: ${tonic}`);
     const scaleName = `${tonic} ${scale}`;
     const foundScale = scales.find((s) => s.name === scaleName);
     if (!foundScale) {
@@ -36,7 +36,7 @@ export function buildScaleData({
         });
     };
 
-    // --- Helper: Assign octaves for descending sequences ---
+    // Assign octaves for descending sequences 
     const assignOctavesDescending = (notesArray, startingOctave) => {
         let octave = startingOctave + octaveTranspose;
         let lastIndex = null;
@@ -62,7 +62,7 @@ export function buildScaleData({
         }
     };
 
-    // --- Apply mode for major scales ---
+    // Apply mode for major scales 
     let modeNotes = notes.slice(0, 7); // first 7 notes only
     const shift = modeShifts[mode] || 0;
 
@@ -98,7 +98,7 @@ export function buildScaleData({
     // --- Octave assignment ---
     const octaveOffset = getOctaveOffset();
 
-    console.log(`Octave transpose offset: ${octaveTranspose}`);
+    //console.log(`Octave transpose offset: ${octaveTranspose}`);
 
     const adjustedStartingOctave = (clef === "treble" ? 2 : 1) + octaveOffset;
     const firstMeasureNotes = assignOctavesAscending(firstMeasureNotesRaw, adjustedStartingOctave);
