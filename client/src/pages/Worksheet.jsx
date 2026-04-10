@@ -1,5 +1,6 @@
 import { useState } from "react";
 import VexFlowSheet from "../components/music/VexFlowSheet";
+import ErrorBoundary from "../components/ui/ErrorBoundary.jsx";
 
 const defaultScaleConfig = {
   tonic: "C",
@@ -86,13 +87,17 @@ export default function Worksheet() {
         </div>
         {worksheetScales.map((scaleRow) => (
           <div key={scaleRow.id}>
-            <VexFlowSheet
-              config={scaleRow.config}
-              setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
-              endpoint="/api/scale"
-              variant="original"
-              scaleTitle={`Scale ${scaleRow.id}`}
-            />
+            <ErrorBoundary
+              fallback={<p className="sheet-error">Scale {scaleRow.id} could not be displayed.</p>}
+            >
+              <VexFlowSheet
+                config={scaleRow.config}
+                setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
+                endpoint="/api/scale"
+                variant="original"
+                scaleTitle={`Scale ${scaleRow.id}`}
+              />
+            </ErrorBoundary>
             <div className="remove-button-container">
               <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
             </div>
@@ -103,13 +108,17 @@ export default function Worksheet() {
         <div className="worksheet-editor">
           {worksheetScales.map((scaleRow) => (
             <div key={scaleRow.id}>
-              <VexFlowSheet
-                config={scaleRow.config}
-                setConfig={() => setRowConfig(scaleRow.id, prev => ({ ...prev, printMode: printMode }))}
-                endpoint="/api/scale"
-                variant="original"
-                scaleTitle={`Scale ${scaleRow.id}`}
-              />
+              <ErrorBoundary
+                fallback={<p className="sheet-error">Scale {scaleRow.id} could not be displayed.</p>}
+              >
+                <VexFlowSheet
+                  config={scaleRow.config}
+                  setConfig={() => setRowConfig(scaleRow.id, prev => ({ ...prev, printMode: printMode }))}
+                  endpoint="/api/scale"
+                  variant="original"
+                  scaleTitle={`Scale ${scaleRow.id}`}
+                />
+              </ErrorBoundary>
             </div>
           ))}
         </div>
