@@ -9,7 +9,7 @@ export default function MobileLinks(props) {
             <ul>
                 <li><NavLink onClick={props.onClick} className={({ isActive }) => isActive ? "mobilelink active-link" : "mobilelink"} to="/">Scale Viewer</NavLink></li>
                 <li><NavLink onClick={props.onClick} className={({ isActive }) => isActive ? "mobilelink" : "mobilelink"} to="/transpose">Transpose</NavLink></li>
-                <li><NavLink onClick={props.onClick} className={({ isActive }) => isActive ? "mobilelink" : "mobilelink"} to="/worksheet">Worksheet Generator</NavLink></li>
+                <li><NavLink onClick={props.onClick} className={({ isActive }) => isActive ? "mobilelink" : "mobilelink"} to="/worksheet">Worksheet</NavLink></li>
             </ul>
         </div>
     )

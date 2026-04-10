@@ -18,7 +18,7 @@ export default function Scale() {
     showControls: false,
     measureSize: 580,
     octaveTranspose: 0,
-    printMode: false
+    printMode: false,
   });
 
   return (
@@ -28,10 +28,9 @@ export default function Scale() {
       <VexFlowSheet
         config={config}
         setConfig={setConfig}
-        endpoint="/api/scale"
+        endpoint="http://localhost:5000/api/scale"
         variant="original"
       />
     </div>
-
   );
 }

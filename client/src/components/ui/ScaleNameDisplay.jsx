@@ -3,7 +3,7 @@ export default function ScaleNameDisplay({ selectedScale, selectedTonic, selecte
       // Display key and scale above sheet music
       <div>
         {selectedScale === "Major" && showMode && `${selectedTonic} ${selectedScale} ${selectedMode}`}
-        {!showMode && `${selectedTonic} ${selectedScale}`}
+        {(selectedScale !== "Major" || !showMode) && `${selectedTonic} ${selectedScale}`}
       </div>
   );
 }

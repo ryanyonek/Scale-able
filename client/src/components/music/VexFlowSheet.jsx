@@ -4,7 +4,7 @@ import {
   majorKeys,
   minorKeys,
   modeShifts,
-  transpositionKeys
+  transpositionKeys,
 } from "../../../../server/services/theory/constants.js";
 
 import VexFlowRenderer from "./VexFlowRenderer.jsx";
@@ -23,12 +23,10 @@ import OctaveSelect from "../controls/OctaveSelect.jsx";
 import ShowControls from "../controls/ShowControls.jsx";
 import ShowModeToggle from "../controls/ShowModeToggle.jsx";
 import { useToneScaleAudio } from "../../hooks/useToneScaleAudio.js";
-import AudioVolumeSlider from "../controls/AudioVolumeSlider.jsx"
-import AudioTempoSelect from "../controls/AudioTempoSelect.jsx"
-import AudioStopButton from "../controls/AudioStopButton.jsx"
-import AudioPlayButton from "../controls/AudioPlayButton.jsx"
- 
-
+import AudioVolumeSlider from "../controls/AudioVolumeSlider.jsx";
+import AudioTempoSelect from "../controls/AudioTempoSelect.jsx";
+import AudioStopButton from "../controls/AudioStopButton.jsx";
+import AudioPlayButton from "../controls/AudioPlayButton.jsx";
 
 export default function VexFlowSheet({
   config,
@@ -36,9 +34,8 @@ export default function VexFlowSheet({
   endpoint,
   variant,
   scaleTitle,
-  renderMode
+  renderMode,
 }) {
-
   // scale data state, set after fetching, sent with the renderer
   const [scaleData, setScaleData] = useState(null);
 
@@ -58,7 +55,7 @@ export default function VexFlowSheet({
     transpositionKey,
     showControls,
     measureSize,
-  } = config ;
+  } = config;
 
   const options = config;
 
@@ -93,70 +90,67 @@ export default function VexFlowSheet({
         //console.log(`Scale Data: ${res}`)
 
         setScaleData(data);
-
       } catch (err) {
         console.error("Fetch failed:", err);
       }
     }
 
     fetchScale();
-  }, [config, endpoint]);
+  }, [options, endpoint]);
 
   // From minor, if a non-major tonic is picked from the dropdown, switch to C, vice versa for minor and A
   useEffect(() => {
     if (scale === "Major" && !majorKeys.includes(tonic)) {
-      setConfig(prev => ({
+      setConfig((prev) => ({
         ...prev,
-        tonic: "C"
+        tonic: "C",
       }));
     } else if (scale !== "Major" && !minorKeys.includes(tonic)) {
-      setConfig(prev => ({
+      setConfig((prev) => ({
         ...prev,
-        tonic: "A"
+        tonic: "A",
       }));
     }
-  }, [scale, tonic]);
+  }, [setConfig, scale, tonic]);
 
   const allNotes =
-    scaleData?.firstMeasure?.notes &&
-    scaleData?.secondMeasure?.notes
-      ? [
-          ...scaleData.firstMeasure.notes,
-          ...scaleData.secondMeasure.notes
-        ].map(note => formatForTone(note))
+    scaleData?.firstMeasure?.notes && scaleData?.secondMeasure?.notes
+      ? [...scaleData.firstMeasure.notes, ...scaleData.secondMeasure.notes].map(
+          (note) => formatForTone(note),
+        )
       : [];
 
   const isPrintMode = renderMode === "print";
 
   return (
-    <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
-        {!isPrintMode && variant === "original" && 
-          <ShowControls 
-            value={showControls}
-            onChange={(value) =>
-              setConfig(prev => ({ ...prev, showControls: value }))
-            }
-          />
-        }
-        {!isPrintMode && variant === "original" && showControls && (
-        
+    <div
+      className={measureSize === 480 ? "small-app-container" : "app-container"}
+    >
+      {!isPrintMode && variant === "original" && (
+        <ShowControls
+          value={showControls}
+          onChange={(value) =>
+            setConfig((prev) => ({ ...prev, showControls: value }))
+          }
+        />
+      )}
+      {!isPrintMode && variant === "original" && showControls && (
         <div className="controls-container">
-        
           <div className="control-panel">
-            <TonicSelect 
+            <TonicSelect
               value={tonic}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, tonic: value }))
+                setConfig((prev) => ({ ...prev, tonic: value }))
               }
               majorKeys={majorKeys}
               minorKeys={minorKeys}
               selectedScale={scale}
             />
-          
+
             <ScaleSelect
               value={scale}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, scale: value }))
+                setConfig((prev) => ({ ...prev, scale: value }))
               }
               scaleTypes={scaleTypes}
             />
@@ -164,49 +158,54 @@ export default function VexFlowSheet({
             <ClefSelect
               value={clef}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, clef: value }))
+                setConfig((prev) => ({ ...prev, clef: value }))
               }
             />
           </div>
 
           <div className="control-panel">
-            <AllAccidentalsToggle 
+            <AllAccidentalsToggle
               value={showAllAccidentals}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, showAllAccidentals: value }))
+                setConfig((prev) => ({ ...prev, showAllAccidentals: value }))
               }
             />
 
             {scale === "Melodic Minor" && (
-              <CourtesyAccidentalsToggle 
+              <CourtesyAccidentalsToggle
                 value={showCourtesyAccidentals}
                 onChange={(value) =>
-                  setConfig(prev => ({ ...prev, showCourtesyAccidentals: value }))
+                  setConfig((prev) => ({
+                    ...prev,
+                    showCourtesyAccidentals: value,
+                  }))
                 }
               />
             )}
-            {scale === "Major" && <ShowModeToggle 
-              value={showMode}
-              onChange={(value) =>
-                setConfig(prev => ({ ...prev, showMode: value }))
-              }
-            />}
+            {scale === "Major" && (
+              <ShowModeToggle
+                value={showMode}
+                onChange={(value) =>
+                  setConfig((prev) => ({ ...prev, showMode: value }))
+                }
+              />
+            )}
             {scale === "Major" && showMode && (
-              <ModeSelect 
+              <ModeSelect
                 value={mode}
-              onChange={(value) =>
-                setConfig(prev => ({ ...prev, mode: value }))
-              }
+                onChange={(value) =>
+                  setConfig((prev) => ({ ...prev, mode: value }))
+                }
                 modeShifts={modeShifts}
               />
             )}
           </div>
 
           <div className="control-panel">
-            <NoteLabelsToggle 
+            <NoteLabelsToggle
               value={showNoteLabels}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, showNoteLabels: value }))
+                setConfig((prev) => ({ ...prev, showNoteLabels: value }))
               }
             />
 
@@ -214,80 +213,74 @@ export default function VexFlowSheet({
               <LyricsSelect
                 value={lyric}
                 onChange={(value) =>
-                  setConfig(prev => ({ ...prev, lyric: value }))
+                  setConfig((prev) => ({ ...prev, lyric: value }))
                 }
               />
             )}
-
           </div>
           <div className="control-panel">
             <DirectionSelect
               value={directionMode}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, directionMode: value }))
+                setConfig((prev) => ({ ...prev, directionMode: value }))
               }
             />
 
-            <OctaveSelect 
+            <OctaveSelect
               value={octaveShift}
               onChange={(value) =>
-                setConfig(prev => ({ ...prev, octaveShift: value }))
+                setConfig((prev) => ({ ...prev, octaveShift: value }))
               }
             />
           </div>
-          
-        </div> )}     
+        </div>
+      )}
       {!isPrintMode && variant === "transpose" && (
-        <TranspositionSelect 
-        value={transpositionKey}
-        onChange={(value) =>
-          setConfig(prev => ({ ...prev, transpositionKey: value }))
-        }
-        keys={transpositionKeys}
-      />)}
+        <TranspositionSelect
+          value={transpositionKey}
+          onChange={(value) =>
+            setConfig((prev) => ({ ...prev, transpositionKey: value }))
+          }
+          keys={transpositionKeys}
+        />
+      )}
 
       <h2 className="scale-title">{scaleTitle}</h2>
       <div className="sheet-music-wrapper">
-        <div className={measureSize === 480 ? "small-app-container" : "app-container"}>
-          { !isPrintMode && <div className="scale-name-wrapper">
-          <ScaleNameDisplay 
-            selectedScale={scale}
-            selectedTonic={
-              variant === "transpose"
-                ? scaleData?.tonic
-                : tonic
-            }
-            selectedMode={mode}
-            showMode={showMode}
-          />
-        </div>}
-          <VexFlowRenderer
-            scaleData={scaleData}
-            options={options}
-          />
-          </div>
+        <div
+          className={
+            measureSize === 480 ? "small-app-container" : "app-container"
+          }
+        >
+          {!isPrintMode && (
+            <div className="scale-name-wrapper">
+              <ScaleNameDisplay
+                selectedScale={scale}
+                selectedTonic={
+                  variant === "transpose" ? scaleData?.tonic : tonic
+                }
+                selectedMode={mode}
+                showMode={showMode}
+              />
+            </div>
+          )}
+          <VexFlowRenderer scaleData={scaleData} options={options} />
+        </div>
       </div>
-        { measureSize === 580 && variant == "original" &&
+      {measureSize === 580 && variant == "original" && (
         <div className="audio-controls">
-          <AudioPlayButton 
+          <AudioPlayButton
             allNotes={allNotes}
             tempo={tempo}
             volume={volume}
             onChange={play}
           />
-          <AudioStopButton 
-            onChange={stop}
-          />
+          <AudioStopButton onChange={stop} />
 
-          <AudioTempoSelect 
-            tempo={tempo}
-            onChange={setTempo}
-          />
-          <AudioVolumeSlider 
-            volume={volume}
-            onChange={setVolumeState}
-          />
-        </div>}
+          <AudioTempoSelect tempo={tempo} onChange={setTempo} />
+          <AudioVolumeSlider volume={volume} onChange={setVolumeState} />
+        </div>
+      )}
     </div>
   );
 }
