@@ -6,6 +6,7 @@ import Worksheet from "../../pages/Worksheet.jsx";
 import Logo from "./Logo.jsx";
 import Links from "./Links.jsx";
 import MobileLinks from "./MobileLinks.jsx";
+import ErrorBoundary from "./ErrorBoundary.jsx";
 
 export default function NavBar() {
     function getWindowWidth() {
@@ -72,9 +73,21 @@ export default function NavBar() {
             </nav>
 
             <Routes>
-                <Route path="/" element={<Scale />} />
-                <Route path="/transpose" element={<Transpose />} />
-                <Route path="/worksheet" element={<Worksheet />} />
+                <Route path="/" element={
+                  <ErrorBoundary fallback={<p className="page-error">Scale Viewer failed to load.</p>}>
+                    <Scale />
+                  </ErrorBoundary>
+                } />
+                <Route path="/transpose" element={
+                  <ErrorBoundary fallback={<p className="page-error">Transpose page failed to load.</p>}>
+                    <Transpose />
+                  </ErrorBoundary>
+                } />
+                <Route path="/worksheet" element={
+                  <ErrorBoundary fallback={<p className="page-error">Worksheet failed to load.</p>}>
+                    <Worksheet />
+                  </ErrorBoundary>
+                } />
             </Routes>
         </BrowserRouter>
     )

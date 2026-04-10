@@ -41,6 +41,7 @@ export default function VexFlowSheet({
 
   // scale data state, set after fetching, sent with the renderer
   const [scaleData, setScaleData] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
 
   // scale data config options
   const {
@@ -63,7 +64,7 @@ export default function VexFlowSheet({
   const options = config;
 
   // audio controls state
-  const { play, stop } = useToneScaleAudio();
+  const { play, stop, audioError } = useToneScaleAudio();
   const [tempo, setTempo] = useState(1);
   const [volume, setVolumeState] = useState(-20); // dB
 
@@ -75,6 +76,7 @@ export default function VexFlowSheet({
   // Fetch scale from server
   useEffect(() => {
     async function fetchScale() {
+      setFetchError(null);
       try {
         const res = await fetch(endpoint, {
           method: "POST",
@@ -82,20 +84,16 @@ export default function VexFlowSheet({
           body: JSON.stringify(options),
         });
 
-        //console.log(res);
-
         if (!res.ok) {
-          console.error("Scale API error:", res.status);
+          setFetchError(`Could not load scale (server error ${res.status})`);
           return;
         }
 
         const data = await res.json();
-        //console.log(`Scale Data: ${res}`)
-
         setScaleData(data);
 
       } catch (err) {
-        console.error("Fetch failed:", err);
+        setFetchError("Could not connect to the server. Check your connection.");
       }
     }
 
@@ -261,19 +259,24 @@ export default function VexFlowSheet({
             showMode={showMode}
           />
         </div>}
-          <VexFlowRenderer
-            scaleData={scaleData}
-            options={options}
-          />
+          {fetchError ? (
+            <p className="sheet-error">{fetchError}</p>
+          ) : (
+            <VexFlowRenderer
+              scaleData={scaleData}
+              options={options}
+            />
+          )}
           </div>
       </div>
         { measureSize === 580 && variant == "original" &&
         <div className="audio-controls">
-          <AudioPlayButton 
+          <AudioPlayButton
             allNotes={allNotes}
             tempo={tempo}
             volume={volume}
             onChange={play}
+            audioError={audioError}
           />
           <AudioStopButton 
             onChange={stop}
