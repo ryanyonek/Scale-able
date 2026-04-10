@@ -130,3 +130,22 @@ input {
     padding: 0.8rem 0.9rem;
   }
 }
+
+.sheet-error {
+  color: vars.$color-primary;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  background-color: white;
+  margin: 0;
+}
+
+.audio-error {
+  color: vars.$color-primary;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+
+.page-error {
+  color: vars.$color-primary;
+  padding: 1rem;
+}
