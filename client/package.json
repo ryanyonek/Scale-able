@@ -9,8 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:run": "vitest run",
     "test:watch": "vitest --watch",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -37,6 +39,7 @@
     "typescript": "^6.0.2",
     "vite": "^7.3.1",
     "vitest": "^4.1.0",
-    "vitest-preview": "^0.0.3"
+    "vitest-preview": "^0.0.3",
+    "@vitest/coverage-v8": "^4.1.0"
   }
 }

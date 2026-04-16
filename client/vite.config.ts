@@ -23,6 +23,18 @@ const tstConfig = testConfig({
     environment: "jsdom",
     setupFiles: ["./src/vitest.setup.ts"],
     reporters: ["verbose"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/**/*.{js,jsx,ts,tsx}"],
+      exclude: [
+        "src/main.jsx",
+        "src/vitest.setup.ts",
+        "**/*.test.{js,jsx,ts,tsx}",
+        "**/__mocks__/**",
+        "src/assets/**",
+      ],
+    },
   },
 });
 
