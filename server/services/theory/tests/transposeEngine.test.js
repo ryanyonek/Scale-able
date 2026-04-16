@@ -57,4 +57,18 @@ describe("transposeTonic", () => {
     const result = transposeTonic("A", "+2: Bb", "Natural Minor");
     expect(result.newTonic).toBe("B");
   });
+
+  it("Db Major unison (0: C) — prefers Db over C# because flat key has fewer accidentals", () => {
+    // Both Db (5 flats) and C# (7 sharps) are valid major keys; Db is preferred (fewer accidentals)
+    const result = transposeTonic("Db", "0: C", "Major");
+    expect(result.newTonic).toBe("Db");
+    expect(result.octaveTranspose).toBe(0);
+  });
+
+  it("B Major unison (0: C) — prefers B over Cb because sharp key has fewer accidentals", () => {
+    // Both B (5 sharps) and Cb (7 flats) are valid major keys; B is preferred (fewer accidentals)
+    const result = transposeTonic("B", "0: C", "Major");
+    expect(result.newTonic).toBe("B");
+    expect(result.octaveTranspose).toBe(0);
+  });
 });

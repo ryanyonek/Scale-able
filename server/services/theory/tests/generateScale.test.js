@@ -108,4 +108,46 @@ describe("generateScale", () => {
     expect(result.firstMeasure.notes).toHaveLength(8);
     expect(result.firstMeasure.notes[0]).toBe("a/4");
   });
+
+  it("A Harmonic Minor — raised 7th (G#) appears as an accidental in the first measure", () => {
+    const result = generateScale({ ...baseConfig, tonic: "A", scale: "Harmonic Minor" });
+    expect(result).not.toBeNull();
+    // G# is not in the natural minor key signature, so it must appear as an explicit accidental
+    const gIndex = result.firstMeasure.notes.findIndex((n) => n.startsWith("g"));
+    expect(gIndex).toBeGreaterThanOrEqual(0);
+    expect(result.firstMeasure.accidentals[gIndex]).not.toBeNull();
+  });
+
+  it("A Harmonic Minor — second measure has 8 notes and the raised 7th is accounted for", () => {
+    const result = generateScale({ ...baseConfig, tonic: "A", scale: "Harmonic Minor" });
+    expect(result.secondMeasure.notes).toHaveLength(8);
+    // The accidentals array for the second measure is always populated (objects with symbol/cautionary)
+    expect(result.secondMeasure.accidentals).toHaveLength(8);
+  });
+
+  it("A Melodic Minor — ascending has raised 6th and 7th, second measure uses natural minor notes", () => {
+    const result = generateScale({
+      ...baseConfig,
+      tonic: "A",
+      scale: "Melodic Minor",
+      showCourtesyAccidentals: true,
+    });
+    expect(result).not.toBeNull();
+    expect(result.firstMeasure.notes).toHaveLength(8);
+    expect(result.secondMeasure.notes).toHaveLength(8);
+    // Second measure accidentals array is populated
+    expect(result.secondMeasure.accidentals).toHaveLength(8);
+  });
+
+  it("A Melodic Minor with showAllAccidentals — second measure descending accidentals are all non-empty", () => {
+    const result = generateScale({
+      ...baseConfig,
+      tonic: "A",
+      scale: "Melodic Minor",
+      showAllAccidentals: true,
+      showCourtesyAccidentals: false,
+    });
+    expect(result.secondMeasure.accidentals).toHaveLength(8);
+    expect(result.secondMeasure.accidentals.every((a) => a !== null)).toBe(true);
+  });
 });

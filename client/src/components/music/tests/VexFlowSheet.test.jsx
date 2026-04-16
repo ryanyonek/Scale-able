@@ -1,6 +1,7 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi, describe, it, expect, beforeEach } from "vitest";
+import { useState } from "react";
 import VexFlowSheet from "../VexFlowSheet.jsx";
 
 // Mock VexFlowRenderer so VexFlow doesn't try to render canvas/SVG in jsdom
@@ -340,5 +341,165 @@ describe("VexFlowSheet", () => {
       (call) => typeof call[0] === "function"
     );
     expect(updaterCall).toBeUndefined();
+  });
+
+  // --- Control onChange handlers (cover inline setConfig callbacks) ---
+
+  // A stateful wrapper so the setConfig updater functions are actually invoked
+  function StatefulWrapper({ initialConfig, endpoint, variant }) {
+    const [config, setConfig] = useState(initialConfig);
+    return (
+      <VexFlowSheet
+        config={config}
+        setConfig={setConfig}
+        endpoint={endpoint}
+        variant={variant}
+      />
+    );
+  }
+
+  function renderWithControls(overrides = {}) {
+    return render(
+      <StatefulWrapper
+        initialConfig={{ ...defaultConfig, showControls: true, ...overrides }}
+        endpoint="http://localhost:5000/api/scale"
+        variant="original"
+      />
+    );
+  }
+
+  it("ShowControls onChange — toggling Show Scale Controls updates showControls state", async () => {
+    const user = userEvent.setup();
+    render(
+      <StatefulWrapper
+        initialConfig={{ ...defaultConfig, showControls: false }}
+        endpoint="http://localhost:5000/api/scale"
+        variant="original"
+      />
+    );
+    // ShowControls checkbox is always visible
+    const checkbox = screen.getByRole("checkbox", { name: /Show Scale Controls/i });
+    await user.click(checkbox);
+    // After toggling, the controls panel should appear
+    expect(screen.getByText(/Scale:/)).toBeInTheDocument();
+  });
+
+  it("TonicSelect onChange — selecting a tonic updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ tonic: "C" });
+    const tonicSelect = screen.getByRole("combobox", { name: /Select Tonic/i });
+    await user.selectOptions(tonicSelect, "G");
+    expect(tonicSelect.value).toBe("G");
+  });
+
+  it("ScaleSelect onChange — selecting a scale type updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls();
+    // ScaleSelect's <label> is not wrapping the <select>, so query by current display value
+    const scaleSelect = screen.getByDisplayValue("Major");
+    await user.selectOptions(scaleSelect, "Natural Minor");
+    expect(scaleSelect.value).toBe("Natural Minor");
+  });
+
+  it("ClefSelect onChange — selecting bass clef updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls();
+    const clefSelect = screen.getByRole("combobox", { name: /Select Clef/i });
+    await user.selectOptions(clefSelect, "bass");
+    expect(clefSelect.value).toBe("bass");
+  });
+
+  it("AllAccidentalsToggle onChange — toggling Show All Accidentals updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ showAllAccidentals: false });
+    const toggle = screen.getByRole("checkbox", { name: /Show All Accidentals/i });
+    await user.click(toggle);
+    expect(toggle).toBeChecked();
+  });
+
+  it("NoteLabelsToggle onChange — toggling Show Note Labels updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ showNoteLabels: true });
+    const toggle = screen.getByRole("checkbox", { name: /Show Note Labels/i });
+    await user.click(toggle);
+    expect(toggle).not.toBeChecked();
+  });
+
+  it("LyricsSelect onChange — selecting a lyric type updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ showNoteLabels: true });
+    const lyricsSelect = screen.getByRole("combobox", { name: /Note Label/i });
+    await user.selectOptions(lyricsSelect, "Scale Degrees");
+    expect(lyricsSelect.value).toBe("Scale Degrees");
+  });
+
+  it("DirectionSelect onChange — selecting ascending-only updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ directionMode: "both" });
+    const dirSelect = screen.getByRole("combobox", { name: /Scale Direction/i });
+    await user.selectOptions(dirSelect, "ascending");
+    expect(dirSelect.value).toBe("ascending");
+  });
+
+  it("OctaveSelect onChange — selecting 8va updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ octaveShift: "current" });
+    const octaveSelect = screen.getByRole("combobox", { name: /^Octave/i });
+    await user.selectOptions(octaveSelect, "8va");
+    expect(octaveSelect.value).toBe("8va");
+  });
+
+  it("ShowModeToggle onChange — enabling Show Major Modes reveals ModeSelect", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ scale: "Major", showMode: false });
+    const modeToggle = screen.getByRole("checkbox", { name: /Show Major Modes/i });
+    await user.click(modeToggle);
+    expect(screen.getByRole("combobox", { name: /Select Major Mode/i })).toBeInTheDocument();
+  });
+
+  it("ModeSelect onChange — selecting Dorian updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ scale: "Major", showMode: true });
+    const modeSelect = screen.getByRole("combobox", { name: /Select Major Mode/i });
+    await user.selectOptions(modeSelect, "Dorian");
+    expect(modeSelect.value).toBe("Dorian");
+  });
+
+  it("CourtesyAccidentalsToggle onChange — toggling updates the config", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ scale: "Melodic Minor", tonic: "A", showCourtesyAccidentals: true });
+    const toggle = screen.getByRole("checkbox", { name: /Show Courtesy Accidentals/i });
+    await user.click(toggle);
+    expect(toggle).not.toBeChecked();
+  });
+
+  it("TranspositionSelect onChange — selecting a transposition key updates the config", async () => {
+    const user = userEvent.setup();
+    render(
+      <StatefulWrapper
+        initialConfig={{ ...defaultConfig, transpositionKey: "0: C" }}
+        endpoint="http://localhost:5000/api/transpose"
+        variant="transpose"
+      />
+    );
+    const transSelect = screen.getByRole("combobox", { name: /Select Transposition/i });
+    await user.selectOptions(transSelect, "+2: Bb");
+    expect(transSelect.value).toBe("+2: Bb");
+  });
+
+  it("AudioTempoSelect onChange — changing tempo updates state", async () => {
+    const user = userEvent.setup();
+    renderWithControls({ measureSize: 580 });
+    // AudioTempoSelect has no label text — identify it by its unique "2x" option
+    const tempoSelect = screen.getByRole("option", { name: "2x" }).closest("select");
+    await user.selectOptions(tempoSelect, "2");
+    expect(tempoSelect.value).toBe("2");
+  });
+
+  it("AudioVolumeSlider onChange — adjusting slider updates volume state", () => {
+    renderWithControls({ measureSize: 580 });
+    const slider = screen.getByRole("slider");
+    fireEvent.change(slider, { target: { value: "-10" } });
+    expect(slider.value).toBe("-10");
   });
 });

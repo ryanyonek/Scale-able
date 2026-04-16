@@ -5,5 +5,17 @@ export default defineConfig({
     globals: true,
     environment: "node",
     reporters: ["verbose"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: [
+        "routes/**/*.js",
+        "services/**/*.js",
+      ],
+      exclude: [
+        "**/*.test.js",
+        "**/tests/**",
+      ],
+    },
   },
 });
