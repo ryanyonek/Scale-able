@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import NavBar from "../NavBar.jsx";
@@ -108,5 +108,21 @@ describe("NavBar", () => {
     setWindowWidth(1024);
     render(<NavBar />);
     expect(screen.getByTestId("logo")).toBeInTheDocument();
+  });
+
+  it("handleResize — switching from desktop to mobile width hides desktop links", () => {
+    setWindowWidth(1024);
+    render(<NavBar />);
+    // Desktop view: Links visible
+    expect(screen.getByTestId("desktop-links")).toBeInTheDocument();
+
+    // Simulate a resize to mobile width — wrap in act to flush the state update
+    act(() => {
+      setWindowWidth(320);
+      window.dispatchEvent(new Event("resize"));
+    });
+
+    // After resize the desktop links should be gone
+    expect(screen.queryByTestId("desktop-links")).not.toBeInTheDocument();
   });
 });

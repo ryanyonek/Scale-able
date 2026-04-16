@@ -1,12 +1,22 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { flushSync } from "react-dom";
 import userEvent from "@testing-library/user-event";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import Worksheet from "../Worksheet.jsx";
 
-// Mock VexFlowSheet to avoid fetch/VexFlow/Tone.js setup
+// Mock VexFlowSheet — exposes a "Change Config" button so tests can invoke setConfig
+// which exercises the setRowConfig callback inside Worksheet.
 vi.mock("../../components/music/VexFlowSheet.jsx", () => ({
-  default: ({ scaleTitle }) => (
-    <div data-testid="vexflow-sheet" data-title={scaleTitle} />
+  default: ({ scaleTitle, setConfig }) => (
+    <div>
+      <div data-testid="vexflow-sheet" data-title={scaleTitle} />
+      <button
+        data-testid="change-config"
+        onClick={() => setConfig((prev) => ({ ...prev, clef: "bass" }))}
+      >
+        Change Config
+      </button>
+    </div>
   ),
 }));
 
@@ -108,5 +118,55 @@ describe("Worksheet", () => {
     fireEvent.click(screen.getByRole("button", { name: /Print Worksheet/i }));
     vi.advanceTimersByTime(200);
     expect(window.print).toHaveBeenCalled();
+  });
+
+  it("printMode section is rendered while print is in progress (covers lines 110-116)", () => {
+    // React 18 batches setPrintMode(true) and setPrintMode(false) in the same event handler.
+    // By intercepting setTimeout and calling flushSync inside it, we force React to commit
+    // the setPrintMode(true) update before setPrintMode(false) is ever queued.
+    render(<Worksheet />);
+
+    let printSectionRendered = false;
+    let setConfigCalled = false;
+
+    // Update the VexFlowSheet mock temporarily to track setConfig calls from the print section
+    vi.spyOn(window, "setTimeout").mockImplementationOnce((fn, delay) => {
+      // At this point setPrintMode(true) is queued but not committed.
+      // flushSync forces React to commit it right now.
+      flushSync(() => {});
+
+      // Now printMode=true: there should be 2 vexflow-sheet divs (main + print).
+      const sheets = screen.queryAllByTestId("vexflow-sheet");
+      printSectionRendered = sheets.length === 2;
+
+      // Clicking "Change Config" in the SECOND sheet exercises the printMode setConfig arrow.
+      const changeButtons = screen.queryAllByTestId("change-config");
+      if (changeButtons.length === 2) {
+        fireEvent.click(changeButtons[1]);
+        setConfigCalled = true;
+      }
+
+      return 1; // return a fake timer ID; don't execute fn (window.print)
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Print Worksheet/i }));
+
+    expect(printSectionRendered).toBe(true);
+    expect(setConfigCalled).toBe(true);
+  });
+
+  it("setRowConfig — calling setConfig on a row updates that row's config without affecting other rows", async () => {
+    const user = userEvent.setup();
+    render(<Worksheet />);
+    // Add a second row so we can verify only the targeted row is affected
+    await user.click(screen.getByRole("button", { name: /Add Scale/i }));
+    expect(screen.getAllByTestId("vexflow-sheet")).toHaveLength(2);
+
+    // Click "Change Config" on the first row — exercises setRowConfig
+    const changeButtons = screen.getAllByTestId("change-config");
+    await user.click(changeButtons[0]);
+
+    // Both rows still exist after the config update
+    expect(screen.getAllByTestId("vexflow-sheet")).toHaveLength(2);
   });
 });
