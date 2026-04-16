@@ -7,10 +7,12 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "devDependencies": {
+    "@vitest/ui": "^4.1.4",
     "vitest": "^4.1.0"
   },
   "keywords": [],
