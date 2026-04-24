@@ -5,7 +5,7 @@ import {
   Accidental,
   Barline,
   Annotation,
-  Voice
+  Voice,
 } from "vexflow";
 
 export function renderScale({ context, scaleData, options }) {
@@ -13,7 +13,18 @@ export function renderScale({ context, scaleData, options }) {
     if (!scaleData) return;
 
     const { key, firstMeasure, secondMeasure } = scaleData;
-    const { clef, measureWidth, containerWidth, measureHeight, STAVE_SIDE_PADDING } = options;
+
+    console.log(firstMeasure);
+    console.log(secondMeasure);
+
+    const {
+      clef,
+      measureWidth,
+      containerWidth,
+      measureHeight,
+      STAVE_SIDE_PADDING,
+      STAVE_TOP_PADDING,
+    } = options;
 
     //console.log(`Measure width: ${measureWidth}`);
     //console.log(`Container width: ${containerWidth}`);
@@ -27,7 +38,7 @@ export function renderScale({ context, scaleData, options }) {
     // STAVE 1
     // -------------------------
     if (firstMeasure?.notes?.length) {
-      stave1 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
+      stave1 = new Stave(STAVE_SIDE_PADDING, STAVE_TOP_PADDING, measureWidth);
       stave1.addClef(clef);
       stave1.addKeySignature(key);
       stave1.setContext(context).draw();
@@ -45,21 +56,35 @@ export function renderScale({ context, scaleData, options }) {
     if (secondMeasure?.notes?.length) {
       if (containerWidth > 880) {
         if (!firstMeasure?.notes?.length) {
-          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
+          stave2 = new Stave(
+            STAVE_SIDE_PADDING,
+            STAVE_TOP_PADDING,
+            measureWidth,
+          );
         } else {
-          stave2 = new Stave(measureWidth + STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
+          stave2 = new Stave(
+            measureWidth + STAVE_SIDE_PADDING,
+            STAVE_TOP_PADDING,
+            measureWidth,
+          );
         }
-      }
-      else if (containerWidth <= 880) {
+      } else if (containerWidth <= 880) {
         if (!firstMeasure?.notes?.length) {
-          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING, measureWidth);
-        }
-        else {
-          stave2 = new Stave(STAVE_SIDE_PADDING, STAVE_SIDE_PADDING + measureHeight, measureWidth);
+          stave2 = new Stave(
+            STAVE_SIDE_PADDING,
+            STAVE_TOP_PADDING,
+            measureWidth,
+          );
+        } else {
+          stave2 = new Stave(
+            STAVE_SIDE_PADDING,
+            STAVE_TOP_PADDING + measureHeight,
+            measureWidth,
+          );
         }
         stave2.addClef(clef);
         stave2.addKeySignature(key);
-      } 
+      }
       stave2.setContext(context);
       stave2.setEndBarType(Barline.type.DOUBLE);
       stave2.draw();
@@ -74,7 +99,7 @@ export function renderScale({ context, scaleData, options }) {
         const note = new StaveNote({
           keys: [noteKey],
           duration: "w",
-          clef
+          clef,
         });
 
         note.setStave(stave);
@@ -98,12 +123,8 @@ export function renderScale({ context, scaleData, options }) {
         if (lyric) {
           const ann = new Annotation(lyric)
             .setFont("Times", 12)
-            .setVerticalJustification(
-              Annotation.VerticalJustify.BOTTOM
-            )
-            .setJustification(
-              Annotation.HorizontalJustify.CENTER
-            );
+            .setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
+            .setJustification(Annotation.HorizontalJustify.CENTER);
 
           ann.y = stave.getYForBottomText() + LYRIC_Y;
           note.addModifier(ann, 0);
@@ -126,16 +147,14 @@ export function renderScale({ context, scaleData, options }) {
     const createVoice = (noteCount) =>
       new Voice({
         num_beats: noteCount * 4,
-        beat_value: 4
+        beat_value: 4,
       }).setStrict(false);
 
     if (notes1VF.length && stave1) {
       const voice1 = createVoice(notes1VF.length);
       voice1.addTickables(notes1VF);
 
-      new Formatter()
-        .joinVoices([voice1])
-        .formatToStave([voice1], stave1);
+      new Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
 
       voice1.draw(context, stave1);
     }
@@ -144,13 +163,10 @@ export function renderScale({ context, scaleData, options }) {
       const voice2 = createVoice(notes2VF.length);
       voice2.addTickables(notes2VF);
 
-      new Formatter()
-        .joinVoices([voice2])
-        .formatToStave([voice2], stave2);
+      new Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
 
       voice2.draw(context, stave2);
     }
-
   } catch (e) {
     console.error("VexFlow render error:", e);
   }

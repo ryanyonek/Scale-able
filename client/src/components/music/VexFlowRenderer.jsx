@@ -20,7 +20,8 @@ export default function VexFlowRenderer({ scaleData, options }) {
       const computedStyle = window.getComputedStyle(containerRef.current);
       const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
       const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
-      const innerWidth = containerRef.current.clientWidth - paddingLeft - paddingRight;
+      const innerWidth =
+        containerRef.current.clientWidth - paddingLeft - paddingRight;
 
       setContainerWidth(Math.max(0, innerWidth));
     };
@@ -46,35 +47,47 @@ export default function VexFlowRenderer({ scaleData, options }) {
 
     containerRef.current.innerHTML = "";
 
-    const renderer = new Renderer(
-      containerRef.current,
-      Renderer.Backends.SVG
-    );
+    const renderer = new Renderer(containerRef.current, Renderer.Backends.SVG);
     let STAVE_SIDE_PADDING = 20;
-    let availableMeasureWidth = (containerWidth - (STAVE_SIDE_PADDING * 2)) / 2;
+    let STAVE_TOP_PADDING = 50;
+    let availableMeasureWidth = (containerWidth - STAVE_SIDE_PADDING * 2) / 2;
 
     // setting the width available for a measure
     if (containerWidth < 880) {
-        availableMeasureWidth = containerWidth - (STAVE_SIDE_PADDING * 2);
+      availableMeasureWidth = containerWidth - STAVE_SIDE_PADDING * 2;
     } else if (containerWidth >= 880) {
       if (directionMode === "both") {
-        availableMeasureWidth = (containerWidth - (STAVE_SIDE_PADDING * 2)) / 2;
-      } else if (directionMode === "ascending" || directionMode === "descending") {
-        availableMeasureWidth = containerWidth - (STAVE_SIDE_PADDING * 2);
+        availableMeasureWidth = (containerWidth - STAVE_SIDE_PADDING * 2) / 2;
+      } else if (
+        directionMode === "ascending" ||
+        directionMode === "descending"
+      ) {
+        availableMeasureWidth = containerWidth - STAVE_SIDE_PADDING * 2;
       }
     }
 
-
-    let measureHeight = 220;
+    console.log(availableMeasureWidth);
+    let scaleFactor = 1.0;
+    let measureHeight = 260;
     if (availableMeasureWidth < 420) {
-      // need to scale the SVG down 
+      // need to scale the SVG down
       const svg = renderer.getContext().svg;
-      const scaleFactor = availableMeasureWidth / 420;
-      //console.log(`Scale factor: ${scaleFactor}`);
+      scaleFactor = availableMeasureWidth / 420;
+      console.log(`Scale factor: ${scaleFactor}`);
       svg.setAttribute("transform", `scale(${scaleFactor})`);
       svg.setAttribute("transform-origin", "top left");
+      // Select the meta tag by its name attribute
+      const viewport = document.querySelector('meta[name="viewport"]');
+      // Check if it exists, then change the content
+      if (viewport) {
+        viewport.setAttribute(
+          "content",
+          `width=device-width, initial-scale=${scaleFactor}`,
+        );
+      }
       availableMeasureWidth = 420;
       measureHeight = measureHeight * scaleFactor;
+      STAVE_TOP_PADDING = STAVE_TOP_PADDING * scaleFactor;
       STAVE_SIDE_PADDING = STAVE_SIDE_PADDING * scaleFactor;
     }
     const measureWidth = availableMeasureWidth;
@@ -82,21 +95,19 @@ export default function VexFlowRenderer({ scaleData, options }) {
     //console.log(`Container width before rendering: ${containerWidth}`);
     //console.log(`Measure size: ${measureWidth}`);
 
-      // width and height for two measures, same line, wider window size
+    // width and height for two measures, same line, wider window size
     if (containerWidth > 880 && directionMode === "both") {
-      const svgWidth = (measureWidth * 2) + (STAVE_SIDE_PADDING * 2);
+      const svgWidth = measureWidth * 2 + STAVE_SIDE_PADDING * 2;
       renderer.resize(svgWidth, measureHeight);
     } else if (containerWidth <= 880 && directionMode === "both") {
       // width and height for two measures, two lines, taller window size
-      const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
-      renderer.resize(svgWidth, measureHeight * 2);      
+      const svgWidth = measureWidth + STAVE_SIDE_PADDING * 2;
+      renderer.resize(svgWidth, measureHeight * 2);
     } else {
       // width and height for one measure, one, any window size
-      const svgWidth = measureWidth + (STAVE_SIDE_PADDING * 2);
-      renderer.resize(svgWidth, measureHeight);  
+      const svgWidth = measureWidth + STAVE_SIDE_PADDING * 2;
+      renderer.resize(svgWidth, measureHeight);
     }
-
-    
 
     const context = renderer.getContext();
 
@@ -108,8 +119,10 @@ export default function VexFlowRenderer({ scaleData, options }) {
         measureWidth,
         containerWidth,
         measureHeight,
-        STAVE_SIDE_PADDING
-      }
+        STAVE_SIDE_PADDING,
+        STAVE_TOP_PADDING,
+        scaleFactor,
+      },
     });
   }, [scaleData, options, directionMode, containerWidth]);
 

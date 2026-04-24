@@ -1,4 +1,11 @@
-import { chromaticFlatKeys, chromaticSharpKeys, majorKeys, minorKeys, diatonicOrder, keySignatures } from "./constants.js";
+import {
+  chromaticFlatKeys,
+  chromaticSharpKeys,
+  majorKeys,
+  minorKeys,
+  diatonicOrder,
+  keySignatures,
+} from "./constants.js";
 
 function parseTranspositionToken(token, tonic) {
   if (!token) {
@@ -8,7 +15,7 @@ function parseTranspositionToken(token, tonic) {
   //console.log(`Token: ${token}`);
 
   const regexDirectionSymbol = /[+\-]/;
-  const regexInterval = /\d+/
+  const regexInterval = /\d+/;
   const regexKey = /[A-G][b#]?/;
 
   const directionSymbol = token.match(regexDirectionSymbol);
@@ -21,7 +28,7 @@ function parseTranspositionToken(token, tonic) {
     stringDirectionSymbol = directionSymbol.toString();
     //console.log(`Direction Symbol: ${directionSymbol}`);
   }
-  
+
   let octaveDirection = 0;
 
   let uppercaseDiatonicOrder = [];
@@ -43,10 +50,18 @@ function parseTranspositionToken(token, tonic) {
   //console.log(`Index interval: ${indexInterval}`);
   //console.log(`Direction Symbol: ${stringDirectionSymbol}`);
 
-  if ((diatonicOrder[tonicIndex + indexInterval] == null || indexInterval === 0) && stringDirectionSymbol === "+") {
-      octaveDirection = 1 // wrap from B -> C
-  } else if ((diatonicOrder[tonicIndex - indexInterval] == null || indexInterval === 0) && stringDirectionSymbol === "-") {
-      octaveDirection = -1; // wrap from C -> B
+  if (
+    (diatonicOrder[tonicIndex + indexInterval] == null ||
+      indexInterval === 0) &&
+    stringDirectionSymbol === "+"
+  ) {
+    octaveDirection = 1; // wrap from B -> C
+  } else if (
+    (diatonicOrder[tonicIndex - indexInterval] == null ||
+      indexInterval === 0) &&
+    stringDirectionSymbol === "-"
+  ) {
+    octaveDirection = -1; // wrap from C -> B
   } else {
     octaveDirection = 0;
   }
@@ -57,23 +72,25 @@ function parseTranspositionToken(token, tonic) {
     octaveDirection = -1;
   }
 
-  //console.log(`Octave direction: ${octaveDirection}`);
+  console.log(`Octave direction: ${octaveDirection}`);
 
   return {
     transposedKey,
-    octaveDirection
+    octaveDirection,
   };
 }
 
 export function transposeTonic(tonic, keyInput, scale) {
-  
   let index = -1;
   let keys = [];
 
   //console.log(`Input Transposition Key: ${keyInput}`);
   //console.log(`Concert Pitch Tonic: ${tonic}`);
 
-  const { transposedKey, octaveDirection } = parseTranspositionToken(keyInput, tonic);
+  const { transposedKey, octaveDirection } = parseTranspositionToken(
+    keyInput,
+    tonic,
+  );
 
   //console.log(`Target key: ${transposedKey}`);
   //console.log(`Octave direction: ${octaveDirection}`);
@@ -89,9 +106,10 @@ export function transposeTonic(tonic, keyInput, scale) {
 
   //console.log(`Original tonic index: ${index}`);
 
-  const transposedKeyIndex = chromaticFlatKeys.indexOf(transposedKey) !== -1
-    ? chromaticFlatKeys.indexOf(transposedKey)
-    : chromaticSharpKeys.indexOf(transposedKey);
+  const transposedKeyIndex =
+    chromaticFlatKeys.indexOf(transposedKey) !== -1
+      ? chromaticFlatKeys.indexOf(transposedKey)
+      : chromaticSharpKeys.indexOf(transposedKey);
 
   //console.log(`Transposed Key Index: ${transposedKeyIndex}`);
 
@@ -106,8 +124,6 @@ export function transposeTonic(tonic, keyInput, scale) {
 
   keys = chromaticFlatKeys;
 
-
-  
   if (minorKeys.indexOf(keys[newIndex]) === -1 && scale !== "Major") {
     if (keys === chromaticFlatKeys) {
       keys = chromaticSharpKeys;
@@ -126,10 +142,23 @@ export function transposeTonic(tonic, keyInput, scale) {
   //console.log(`chromaticFlatKeys[newIndex]: ${chromaticFlatKeys[newIndex]}`);
   //console.log(`chromaticSharpKeys[newIndex]: ${chromaticSharpKeys[newIndex]}`);
 
-  if ((majorKeys.indexOf(chromaticFlatKeys[newIndex]) !== -1 && majorKeys.indexOf(chromaticSharpKeys[newIndex]) !== -1 && scale === "Major") || (minorKeys.indexOf(chromaticFlatKeys[newIndex]) !== -1 && minorKeys.indexOf(chromaticSharpKeys[newIndex]) !== -1 && scale !== "Major")) {
-    if (keySignatures[chromaticFlatKeys[newIndex]].length < keySignatures[chromaticSharpKeys[newIndex]].length) {
+  if (
+    (majorKeys.indexOf(chromaticFlatKeys[newIndex]) !== -1 &&
+      majorKeys.indexOf(chromaticSharpKeys[newIndex]) !== -1 &&
+      scale === "Major") ||
+    (minorKeys.indexOf(chromaticFlatKeys[newIndex]) !== -1 &&
+      minorKeys.indexOf(chromaticSharpKeys[newIndex]) !== -1 &&
+      scale !== "Major")
+  ) {
+    if (
+      keySignatures[chromaticFlatKeys[newIndex]].length <
+      keySignatures[chromaticSharpKeys[newIndex]].length
+    ) {
       keys = chromaticFlatKeys;
-    } else if (keySignatures[chromaticSharpKeys[newIndex]].length < keySignatures[chromaticFlatKeys[newIndex]].length) {
+    } else if (
+      keySignatures[chromaticSharpKeys[newIndex]].length <
+      keySignatures[chromaticFlatKeys[newIndex]].length
+    ) {
       keys = chromaticSharpKeys;
     } else {
       keys = chromaticFlatKeys;
@@ -138,10 +167,10 @@ export function transposeTonic(tonic, keyInput, scale) {
 
   //console.log(`Keys: ${keys}`);
 
-    //console.log(`New Tonic: ${keys[newIndex]}`);
-  
-    return {
+  //console.log(`New Tonic: ${keys[newIndex]}`);
+
+  return {
     newTonic: keys[newIndex],
-    octaveTranspose: octaveShiftSteps
+    octaveTranspose: octaveShiftSteps,
   };
 }

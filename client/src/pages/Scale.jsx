@@ -28,7 +28,7 @@ export default function Scale() {
       <VexFlowSheet
         config={config}
         setConfig={setConfig}
-        endpoint="http://localhost:5000/api/scale"
+        endpoint="/api/scale"
         variant="original"
       />
     </div>

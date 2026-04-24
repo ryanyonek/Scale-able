@@ -1,12 +1,6 @@
 @use "variables" as vars;
 @use "sass:color";
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .navbar {
   display: flex;
   //justify-content: space-between;
@@ -161,17 +155,26 @@ body {
   font-family: "Amethysta", serif;
   font-weight: 400;
   font-style: normal;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
   //border: 1px solid black;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .app-container {
-  width: min(100%, 75rem);
+  width: 100%;
   margin: 0 auto 0 auto;
   //border: 1px solid black;
 }
 
 .small-app-container {
-  width: min(100%, 62.5rem);
+  width: 100%;
   margin: 0 auto 0 auto;
   //border: 1px solid black;
 }
@@ -215,9 +218,6 @@ body {
 }
 
 @media (max-width: 1100px) {
-  .html {
-    max-width: 1100px;
-  }
   .navbar {
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
@@ -242,9 +242,6 @@ body {
 }
 
 @media (max-width: 768px) {
-  .html {
-    max-width: 768px;
-  }
   .navbar {
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
@@ -261,25 +258,30 @@ body {
   }
 
   .small-app-container {
-    width: min(100%, 62.5rem);
+    width: 100%;
     margin: 0 auto 0 auto;
     //border: 1px solid black;
   }
 }
 
 @media (max-width: 480px) {
-  .html {
-    max-width: 480px;
-  }
   .navbar {
     align-items: center;
     justify-content: center;
+  }
+  .small-app-container {
+    width: 100%;
+    margin: 0 auto 0 auto;
+    //border: 1px solid black;
   }
 }
 
 @media print {
   body {
     background-color: white;
+    width: 1024px; /* Forces the layout to 1024px wide on paper */
+    margin: 0;
+    padding: 0;
   }
 
   .navbar,
@@ -300,13 +302,4 @@ body {
     padding: 0;
     margin: 0;
   }
-
-  //@page {
-  //size: 8.5in 11in; /* Standard Letter size (width height) */
-  //orientation: portrait; /* or landscape */
-  //}
-
-  //.worksheet-print-row.page-break {
-
-  //}
 }

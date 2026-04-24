@@ -18,7 +18,7 @@ const defaultScaleConfig = {
   showControls: false,
   measureSize: 480,
   octaveTranspose: 0,
-  printMode: false
+  printMode: false,
 };
 
 function createWorksheetScale(id) {
@@ -37,10 +37,45 @@ export default function Worksheet() {
   const [printMode, setPrintMode] = useState(false);
 
   function handleClick() {
-    //console.log("Print button clicked.");
+    const viewportContent = document
+      .querySelector('meta[name="viewport"]')
+      .getAttribute("content");
+
+    var beforePrint = function () {
+      console.log("Functionality to run before printing.");
+      document
+        .querySelector('meta[name="viewport"]')
+        .setAttribute("content", "width=1024");
+    };
+    var afterPrint = function () {
+      console.log("Functionality to run after printing");
+      document
+        .querySelector('meta[name="viewport"]')
+        .setAttribute("content", `${viewportContent}`);
+    };
+
+    if (window.matchMedia) {
+      var mediaQueryList = window.matchMedia("print");
+      mediaQueryList.addListener(function (mql) {
+        if (mql.matches) {
+          beforePrint();
+        } else {
+          afterPrint();
+        }
+      });
+    }
+
+    // need to force a re-render in order to have DOM Elements match the fixed width of the print page
+
+    window.onbeforeprint = beforePrint;
+    window.onafterprint = afterPrint;
+    console.log("Print button clicked.");
     setPrintMode(true);
-    window.setTimeout(() => { // Delay to ensure the rerender completes
-      window.print(); 
+    window.setTimeout(() => {
+      window.onbeforeprint();
+      // Delay to ensure the rerender completes
+      window.print();
+      window.onafterprint();
     }, 100);
     setPrintMode(false);
   }
@@ -64,12 +99,13 @@ export default function Worksheet() {
         if (scaleRow.id !== id) {
           return scaleRow;
         }
-        const nextConfig = typeof updater === "function" ? updater(scaleRow.config) : updater;
+        const nextConfig =
+          typeof updater === "function" ? updater(scaleRow.config) : updater;
         return {
           ...scaleRow,
           config: nextConfig,
         };
-      })
+      }),
     );
   }
 
@@ -79,7 +115,10 @@ export default function Worksheet() {
       <section className="worksheet-page">
         <div className="worksheet-editor no-print">
           <div className="worksheet-button-container">
-            <button onClick={addScaleRow}>Add Scale ({worksheetScales.length}{/*`Scale${worksheetScales.length > 1 ? "s" : ""}`*/})</button>
+            <button onClick={addScaleRow}>
+              Add Scale ({worksheetScales.length}
+              {/*`Scale${worksheetScales.length > 1 ? "s" : ""}`*/})
+            </button>
             <button type="button" onClick={() => handleClick()}>
               Print Worksheet
             </button>
@@ -88,7 +127,11 @@ export default function Worksheet() {
         {worksheetScales.map((scaleRow) => (
           <div key={scaleRow.id}>
             <ErrorBoundary
-              fallback={<p className="sheet-error">Scale {scaleRow.id} could not be displayed.</p>}
+              fallback={
+                <p className="sheet-error">
+                  Scale {scaleRow.id} could not be displayed.
+                </p>
+              }
             >
               <VexFlowSheet
                 config={scaleRow.config}
@@ -99,30 +142,43 @@ export default function Worksheet() {
               />
             </ErrorBoundary>
             <div className="remove-button-container">
-              <button onClick={() => removeScaleRow(scaleRow.id)}>Remove</button>
+              <button onClick={() => removeScaleRow(scaleRow.id)}>
+                Remove
+              </button>
             </div>
           </div>
         ))}
       </section>
-      {printMode && <section className="worksheet-page">
-        <div className="worksheet-editor">
-          {worksheetScales.map((scaleRow) => (
-            <div key={scaleRow.id}>
-              <ErrorBoundary
-                fallback={<p className="sheet-error">Scale {scaleRow.id} could not be displayed.</p>}
-              >
-                <VexFlowSheet
-                  config={scaleRow.config}
-                  setConfig={() => setRowConfig(scaleRow.id, prev => ({ ...prev, printMode: printMode }))}
-                  endpoint="/api/scale"
-                  variant="original"
-                  scaleTitle={`Scale ${scaleRow.id}`}
-                />
-              </ErrorBoundary>
-            </div>
-          ))}
-        </div>
-      </section>}
+      {printMode && (
+        <section className="worksheet-page">
+          <div className="worksheet-editor">
+            {worksheetScales.map((scaleRow) => (
+              <div key={scaleRow.id}>
+                <ErrorBoundary
+                  fallback={
+                    <p className="sheet-error">
+                      Scale {scaleRow.id} could not be displayed.
+                    </p>
+                  }
+                >
+                  <VexFlowSheet
+                    config={scaleRow.config}
+                    setConfig={() =>
+                      setRowConfig(scaleRow.id, (prev) => ({
+                        ...prev,
+                        printMode: printMode,
+                      }))
+                    }
+                    endpoint="/api/scale"
+                    variant="original"
+                    scaleTitle={`Scale ${scaleRow.id}`}
+                  />
+                </ErrorBoundary>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
