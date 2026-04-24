@@ -37,47 +37,12 @@ export default function Worksheet() {
   const [printMode, setPrintMode] = useState(false);
 
   function handleClick() {
-    const viewportContent = document
-      .querySelector('meta[name="viewport"]')
-      .getAttribute("content");
-
-    var beforePrint = function () {
-      console.log("Functionality to run before printing.");
-      document
-        .querySelector('meta[name="viewport"]')
-        .setAttribute("content", "width=1024");
-    };
-    var afterPrint = function () {
-      console.log("Functionality to run after printing");
-      document
-        .querySelector('meta[name="viewport"]')
-        .setAttribute("content", `${viewportContent}`);
-    };
-
-    if (window.matchMedia) {
-      var mediaQueryList = window.matchMedia("print");
-      mediaQueryList.addListener(function (mql) {
-        if (mql.matches) {
-          beforePrint();
-        } else {
-          afterPrint();
-        }
-      });
-    }
-
-    // need to force a re-render in order to have DOM Elements match the fixed width of the print page
-
-    window.onbeforeprint = beforePrint;
-    window.onafterprint = afterPrint;
-    console.log("Print button clicked.");
     setPrintMode(true);
-    window.setTimeout(() => {
-      window.onbeforeprint();
-      // Delay to ensure the rerender completes
+    // Wait for React to commit the print section and VexFlow to render at 1024px
+    setTimeout(() => {
       window.print();
-      window.onafterprint();
-    }, 100);
-    setPrintMode(false);
+      setPrintMode(false);
+    }, 500);
   }
 
   function addScaleRow() {
@@ -112,8 +77,8 @@ export default function Worksheet() {
   return (
     <div className="body-wrapper">
       <h1 className="page-title">Scale-able Worksheet</h1>
-      <section className="worksheet-page">
-        <div className="worksheet-editor no-print">
+      <section className="worksheet-page no-print">
+        <div className="worksheet-editor">
           <div className="worksheet-button-container">
             <button onClick={addScaleRow}>
               Add Scale ({worksheetScales.length}
@@ -150,33 +115,27 @@ export default function Worksheet() {
         ))}
       </section>
       {printMode && (
-        <section className="worksheet-page">
-          <div className="worksheet-editor">
-            {worksheetScales.map((scaleRow) => (
-              <div key={scaleRow.id}>
-                <ErrorBoundary
-                  fallback={
-                    <p className="sheet-error">
-                      Scale {scaleRow.id} could not be displayed.
-                    </p>
-                  }
-                >
-                  <VexFlowSheet
-                    config={scaleRow.config}
-                    setConfig={() =>
-                      setRowConfig(scaleRow.id, (prev) => ({
-                        ...prev,
-                        printMode: printMode,
-                      }))
-                    }
-                    endpoint="/api/scale"
-                    variant="original"
-                    scaleTitle={`Scale ${scaleRow.id}`}
-                  />
-                </ErrorBoundary>
-              </div>
-            ))}
-          </div>
+        <section className="worksheet-page" style={{ width: "1024px" }}>
+          {worksheetScales.map((scaleRow) => (
+            <div key={scaleRow.id}>
+              <ErrorBoundary
+                fallback={
+                  <p className="sheet-error">
+                    Scale {scaleRow.id} could not be displayed.
+                  </p>
+                }
+              >
+                <VexFlowSheet
+                  config={scaleRow.config}
+                  setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
+                  endpoint="/api/scale"
+                  variant="original"
+                  scaleTitle={`Scale ${scaleRow.id}`}
+                  renderMode="print"
+                />
+              </ErrorBoundary>
+            </div>
+          ))}
         </section>
       )}
     </div>
