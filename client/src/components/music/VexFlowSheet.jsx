@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   scaleTypes,
   majorKeys,
@@ -27,6 +27,10 @@ import AudioVolumeSlider from "../controls/AudioVolumeSlider.jsx";
 import AudioTempoSelect from "../controls/AudioTempoSelect.jsx";
 import AudioStopButton from "../controls/AudioStopButton.jsx";
 import AudioPlayButton from "../controls/AudioPlayButton.jsx";
+
+// Module-level cache so the print section can reuse data already fetched by
+// the main section without a second network round-trip (critical on mobile).
+const scaleDataCache = new Map();
 
 export default function VexFlowSheet({
   config,
@@ -70,15 +74,29 @@ export default function VexFlowSheet({
     return note.replace("/", "");
   }
 
-  // Fetch scale from server
+  // Fetch scale from server (with module-level cache to avoid redundant
+  // network requests when the print section mounts with identical options).
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
   useEffect(() => {
     async function fetchScale() {
       setFetchError(null);
+
+      // Exclude client-only flags that don't affect the server response
+      const { printMode: _ignored, ...fetchOptions } = optionsRef.current;
+      const cacheKey = JSON.stringify({ endpoint, ...fetchOptions });
+
+      if (scaleDataCache.has(cacheKey)) {
+        setScaleData(scaleDataCache.get(cacheKey));
+        return;
+      }
+
       try {
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(options),
+          body: JSON.stringify(fetchOptions),
         });
 
         if (!res.ok) {
@@ -87,6 +105,7 @@ export default function VexFlowSheet({
         }
 
         const data = await res.json();
+        scaleDataCache.set(cacheKey, data);
         setScaleData(data);
       } catch (err) {
         setFetchError(
