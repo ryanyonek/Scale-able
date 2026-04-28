@@ -2,16 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { Renderer } from "vexflow";
 import { renderScale } from "../../../lib/render/vexflowRenderer";
 
-export default function VexFlowRenderer({ scaleData, options }) {
+export default function VexFlowRenderer({ scaleData, options, forcedWidth }) {
   const containerRef = useRef(null);
 
   const { directionMode } = options;
   //console.log(`Asc and/or desc: ${directionMode}`);
 
-  const [containerWidth, setContainerWidth] = useState(0);
+  // When forcedWidth is provided (e.g. the print section) we skip ResizeObserver
+  // entirely and start with the correct width immediately, avoiding the async
+  // layout-then-observe cycle that can miss the window.print() deadline on mobile.
+  const [containerWidth, setContainerWidth] = useState(forcedWidth ?? 0);
 
-  // Updating the window width as the size changes
+  // Updating the window width as the size changes (skipped when width is forced)
   useEffect(() => {
+    if (forcedWidth !== undefined) return;
     if (!containerRef.current) return;
 
     const updateContainerWidth = () => {
@@ -37,7 +41,7 @@ export default function VexFlowRenderer({ scaleData, options }) {
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateContainerWidth);
     };
-  }, []);
+  }, [forcedWidth]);
 
   // checking initializations
   useEffect(() => {

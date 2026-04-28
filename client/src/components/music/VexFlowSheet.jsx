@@ -286,7 +286,11 @@ export default function VexFlowSheet({
           {fetchError ? (
             <p className="sheet-error">{fetchError}</p>
           ) : (
-            <VexFlowRenderer scaleData={scaleData} options={options} />
+            <VexFlowRenderer
+              scaleData={scaleData}
+              options={options}
+              forcedWidth={isPrintMode ? 1024 : undefined}
+            />
           )}
         </div>
       </div>
