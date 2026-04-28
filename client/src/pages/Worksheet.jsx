@@ -37,10 +37,22 @@ export default function Worksheet() {
   const [printMode, setPrintMode] = useState(false);
 
   function handleClick() {
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    const originalViewport = viewportMeta.getAttribute("content");
+
+    // Switch existing renderers to 1024px via renderMode="print" / forcedWidth.
+    // This modifies the VISIBLE content so mobile browsers capture it correctly —
+    // a separate off-screen section sits in overflow and is missed by mobile
+    // Chrome's print engine.
     setPrintMode(true);
-    // Wait for React to commit the print section and VexFlow to render at 1024px
+
     setTimeout(() => {
+      // Set viewport to 1024px so mobile browsers lay out at the print width
+      // before the print dialog captures the page.
+      viewportMeta.setAttribute("content", "width=1024");
       window.print();
+      // Restore viewport and re-attach ResizeObserver for normal interaction.
+      viewportMeta.setAttribute("content", originalViewport);
       setPrintMode(false);
     }, 500);
   }
@@ -77,12 +89,11 @@ export default function Worksheet() {
   return (
     <div className="body-wrapper">
       <h1 className="page-title">Scale-able Worksheet</h1>
-      <section className="worksheet-page no-print">
-        <div className="worksheet-editor">
+      <section className="worksheet-page">
+        <div className="worksheet-editor no-print">
           <div className="worksheet-button-container">
             <button onClick={addScaleRow}>
-              Add Scale ({worksheetScales.length}
-              {/*`Scale${worksheetScales.length > 1 ? "s" : ""}`*/})
+              Add Scale ({worksheetScales.length})
             </button>
             <button type="button" onClick={() => handleClick()}>
               Print Worksheet
@@ -104,9 +115,10 @@ export default function Worksheet() {
                 endpoint="/api/scale"
                 variant="original"
                 scaleTitle={`Scale ${scaleRow.id}`}
+                renderMode={printMode ? "print" : undefined}
               />
             </ErrorBoundary>
-            <div className="remove-button-container">
+            <div className="remove-button-container no-print">
               <button onClick={() => removeScaleRow(scaleRow.id)}>
                 Remove
               </button>
@@ -114,30 +126,6 @@ export default function Worksheet() {
           </div>
         ))}
       </section>
-      {printMode && (
-        <section className="worksheet-page" style={{ width: "1024px" }}>
-          {worksheetScales.map((scaleRow) => (
-            <div key={scaleRow.id}>
-              <ErrorBoundary
-                fallback={
-                  <p className="sheet-error">
-                    Scale {scaleRow.id} could not be displayed.
-                  </p>
-                }
-              >
-                <VexFlowSheet
-                  config={scaleRow.config}
-                  setConfig={(updater) => setRowConfig(scaleRow.id, updater)}
-                  endpoint="/api/scale"
-                  variant="original"
-                  scaleTitle={`Scale ${scaleRow.id}`}
-                  renderMode="print"
-                />
-              </ErrorBoundary>
-            </div>
-          ))}
-        </section>
-      )}
     </div>
   );
 }

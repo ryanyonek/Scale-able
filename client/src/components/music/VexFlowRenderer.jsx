@@ -8,10 +8,18 @@ export default function VexFlowRenderer({ scaleData, options, forcedWidth }) {
   const { directionMode } = options;
   //console.log(`Asc and/or desc: ${directionMode}`);
 
-  // When forcedWidth is provided (e.g. the print section) we skip ResizeObserver
-  // entirely and start with the correct width immediately, avoiding the async
+  // When forcedWidth is provided (e.g. during printing) we skip ResizeObserver
+  // entirely and use the target width immediately, avoiding the async
   // layout-then-observe cycle that can miss the window.print() deadline on mobile.
   const [containerWidth, setContainerWidth] = useState(forcedWidth ?? 0);
+
+  // Sync containerWidth whenever forcedWidth is set or cleared.
+  // useState only uses the initializer once, so prop changes need an effect.
+  useEffect(() => {
+    if (forcedWidth !== undefined) {
+      setContainerWidth(forcedWidth);
+    }
+  }, [forcedWidth]);
 
   // Updating the window width as the size changes (skipped when width is forced)
   useEffect(() => {
