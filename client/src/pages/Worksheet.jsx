@@ -47,13 +47,17 @@ export default function Worksheet() {
     setPrintMode(true);
 
     setTimeout(() => {
-      // Set viewport to 1024px so mobile browsers lay out at the print width
-      // before the print dialog captures the page.
+      // Set viewport to 1024px so mobile browsers lay out at the print width.
       viewportMeta.setAttribute("content", "width=1024");
-      window.print();
-      // Restore viewport and re-attach ResizeObserver for normal interaction.
-      viewportMeta.setAttribute("content", originalViewport);
-      setPrintMode(false);
+      // Wait one animation frame for the browser to reflow at the new viewport
+      // width before the print engine captures the page. Without this gap,
+      // mobile Chrome captures the layout at the old (device) viewport size.
+      requestAnimationFrame(() => {
+        window.print();
+        // Restore viewport and re-attach ResizeObserver for normal interaction.
+        viewportMeta.setAttribute("content", originalViewport);
+        setPrintMode(false);
+      });
     }, 500);
   }
 
