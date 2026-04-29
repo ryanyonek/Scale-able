@@ -50,16 +50,21 @@ export default function Worksheet() {
       // Set viewport to 1024px so mobile browsers lay out at the print width.
       viewportMeta.setAttribute("content", "width=1024");
 
-      // Restore ONLY after the print dialog has finished — not immediately after
-      // window.print(). On mobile Chrome, window.print() is non-blocking: it
-      // returns before the print engine captures the DOM, so restoring the
-      // viewport and clearing printMode synchronously causes the scales to snap
-      // back to device width before the snapshot is taken.
-      window.onafterprint = () => {
-        viewportMeta.setAttribute("content", originalViewport);
-        setPrintMode(false);
-        window.onafterprint = null;
+      // Restore ONLY after the print dialog has truly finished.
+      // window.onafterprint fires immediately after window.print() returns on
+      // mobile Chrome — before the print engine has captured the DOM — so we
+      // use matchMedia('print') instead.  Its 'change' event fires when the
+      // print CSS media query transitions back to inactive, which is the
+      // reliable signal that the browser has returned to screen rendering.
+      const mql = window.matchMedia("print");
+      const afterPrintListener = (e) => {
+        if (!e.matches) {
+          viewportMeta.setAttribute("content", originalViewport);
+          setPrintMode(false);
+          mql.removeEventListener("change", afterPrintListener);
+        }
       };
+      mql.addEventListener("change", afterPrintListener);
 
       // One rAF lets the browser reflow the layout at 1024px before the print
       // dialog captures the page.
