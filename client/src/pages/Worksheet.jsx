@@ -50,21 +50,49 @@ export default function Worksheet() {
       // Set viewport to 1024px so mobile browsers lay out at the print width.
       viewportMeta.setAttribute("content", "width=1024");
 
-      // Restore ONLY after the print dialog has truly finished.
-      // window.onafterprint fires immediately after window.print() returns on
-      // mobile Chrome — before the print engine has captured the DOM — so we
-      // use matchMedia('print') instead.  Its 'change' event fires when the
-      // print CSS media query transitions back to inactive, which is the
-      // reliable signal that the browser has returned to screen rendering.
+      let cleanedUp = false;
+      function cleanup() {
+        if (cleanedUp) return;
+        cleanedUp = true;
+        viewportMeta.setAttribute("content", originalViewport);
+        setPrintMode(false);
+      }
+
+      // On mobile Chrome, window.print() is fully non-blocking: it returns
+      // before the print engine captures the DOM, and both onafterprint and
+      // matchMedia('print') fire immediately after window.print() returns —
+      // not after the print snapshot is taken.  A fixed delay is the only
+      // reliable way to keep the 1024px layout in place long enough.
+      //
+      // On desktop, matchMedia fires correctly (active → inactive when the
+      // dialog truly closes), so we use it as an early-exit to avoid leaving
+      // the UI stuck in print mode after the dialog is dismissed.  We only
+      // honour the matchMedia signal once the print media query has gone
+      // active first, and only after a minimum hold that covers mobile
+      // Chrome's capture window.
+      const PRINT_HOLD_MS = 2500;
+      let printHoldExpired = false;
+      setTimeout(() => {
+        printHoldExpired = true;
+      }, PRINT_HOLD_MS);
+
+      // Safety net: always clean up after PRINT_HOLD_MS + 3 s so the UI is
+      // never permanently stuck in print mode.
+      setTimeout(cleanup, PRINT_HOLD_MS + 3000);
+
       const mql = window.matchMedia("print");
-      const afterPrintListener = (e) => {
-        if (!e.matches) {
-          viewportMeta.setAttribute("content", originalViewport);
-          setPrintMode(false);
-          mql.removeEventListener("change", afterPrintListener);
+      let printWentActive = false;
+      function onPrintChange(e) {
+        if (e.matches) {
+          printWentActive = true;
+        } else if (printWentActive && printHoldExpired) {
+          // Desktop path: print media went active then inactive AND the
+          // minimum hold has elapsed — safe to restore.
+          mql.removeEventListener("change", onPrintChange);
+          cleanup();
         }
-      };
-      mql.addEventListener("change", afterPrintListener);
+      }
+      mql.addEventListener("change", onPrintChange);
 
       // One rAF lets the browser reflow the layout at 1024px before the print
       // dialog captures the page.
