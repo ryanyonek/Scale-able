@@ -15,6 +15,13 @@ export default function NavBar() {
     return width;
   }
 
+  function getViewportScale() {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) return 1;
+    const match = viewport.getAttribute("content").match(/initial-scale=([\d.]+)/);
+    return match ? parseFloat(match[1]) : 1;
+  }
+
   function toggleNav() {
     if (!toggleMenu) {
       console.log("Menu opened");
@@ -30,6 +37,7 @@ export default function NavBar() {
   }
 
   const [windowSize, setWindowSize] = useState(getWindowWidth());
+  const [viewportScale, setViewportScale] = useState(1);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [mobileWidth, setMobileWidth] = useState("0");
   const [mobileDisplay, setMobileDisplay] = useState("none");
@@ -42,27 +50,36 @@ export default function NavBar() {
     function handleResize() {
       setWindowSize(getWindowWidth());
     }
-    //console.log(`Mobile Links Style: ${mobileLinksStyle}`);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) return;
+    const observer = new MutationObserver(() => {
+      setViewportScale(getViewportScale());
+    });
+    observer.observe(viewport, { attributes: true, attributeFilter: ["content"] });
+    return () => observer.disconnect();
   }, []);
 
   return (
     <BrowserRouter style={{ display: "contents" }}>
       <nav className="navbar">
         <Logo onClick={toggleNav} toggleMenu={toggleMenu} />
-        {windowSize <= 480 && (
+        {viewportScale < 1 && (
           <span onClick={toggleNav} className="menu">
             ☰
           </span>
         )}
-        {windowSize <= 480 && toggleMenu && (
+        {viewportScale < 1 && toggleMenu && (
           <MobileLinks
             mobileLinksStyle={mobileLinksStyle}
             onClick={toggleNav}
           />
         )}
-        {windowSize > 480 && <Links />}
+        {viewportScale >= 1 && <Links />}
       </nav>
 
       <Routes>
