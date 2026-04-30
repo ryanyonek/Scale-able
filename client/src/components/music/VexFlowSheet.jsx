@@ -25,7 +25,6 @@ import ShowModeToggle from "../controls/ShowModeToggle.jsx";
 import { useToneScaleAudio } from "../../hooks/useToneScaleAudio.js";
 import AudioVolumeSlider from "../controls/AudioVolumeSlider.jsx";
 import AudioTempoSelect from "../controls/AudioTempoSelect.jsx";
-import AudioStopButton from "../controls/AudioStopButton.jsx";
 import AudioPlayButton from "../controls/AudioPlayButton.jsx";
 
 // Module-level cache so the print section can reuse data already fetched by
@@ -65,9 +64,9 @@ export default function VexFlowSheet({
   const options = config;
 
   // audio controls state
-  const { play, stop, audioError } = useToneScaleAudio();
+  const { play, stop, audioError, playing } = useToneScaleAudio();
   const [tempo, setTempo] = useState(1);
-  const [volume, setVolumeState] = useState(-20); // dB
+  const [volume, setVolume] = useState(-20); // dB
 
   // formatting note input for audio playback
   function formatForTone(note) {
@@ -300,13 +299,18 @@ export default function VexFlowSheet({
             allNotes={allNotes}
             tempo={tempo}
             volume={volume}
-            onChange={play}
+            play={play}
+            stop={stop}
             audioError={audioError}
+            playing={playing}
           />
-          <AudioStopButton onChange={stop} />
 
-          <AudioTempoSelect tempo={tempo} onChange={setTempo} />
-          <AudioVolumeSlider volume={volume} onChange={setVolumeState} />
+          <AudioTempoSelect tempo={tempo} setTempo={setTempo} stop={stop} />
+          <AudioVolumeSlider
+            volume={volume}
+            setVolume={setVolume}
+            stop={stop}
+          />
         </div>
       )}
     </div>

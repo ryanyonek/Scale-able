@@ -78,14 +78,14 @@ export default function VexFlowRenderer({ scaleData, options, forcedWidth }) {
       }
     }
 
-    console.log(availableMeasureWidth);
+    //console.log(availableMeasureWidth);
     let scaleFactor = 1.0;
     let measureHeight = 260;
     if (availableMeasureWidth < 420) {
       // need to scale the SVG down
       const svg = renderer.getContext().svg;
       scaleFactor = availableMeasureWidth / 420;
-      console.log(`Scale factor: ${scaleFactor}`);
+      //console.log(`Scale factor: ${scaleFactor}`);
       svg.setAttribute("transform", `scale(${scaleFactor})`);
       svg.setAttribute("transform-origin", "top left");
       // Select the meta tag by its name attribute

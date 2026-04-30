@@ -14,8 +14,8 @@ export function renderScale({ context, scaleData, options }) {
 
     const { key, firstMeasure, secondMeasure } = scaleData;
 
-    console.log(firstMeasure);
-    console.log(secondMeasure);
+    //console.log(firstMeasure);
+    //console.log(secondMeasure);
 
     const {
       clef,

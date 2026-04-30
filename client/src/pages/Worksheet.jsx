@@ -41,9 +41,7 @@ export default function Worksheet() {
     const originalViewport = viewportMeta.getAttribute("content");
 
     // Switch existing renderers to 1024px via renderMode="print" / forcedWidth.
-    // This modifies the VISIBLE content so mobile browsers capture it correctly —
-    // a separate off-screen section sits in overflow and is missed by mobile
-    // Chrome's print engine.
+
     setPrintMode(true);
 
     setTimeout(() => {
@@ -58,27 +56,17 @@ export default function Worksheet() {
         setPrintMode(false);
       }
 
-      // On mobile Chrome, window.print() is fully non-blocking: it returns
-      // before the print engine captures the DOM, and both onafterprint and
-      // matchMedia('print') fire immediately after window.print() returns —
-      // not after the print snapshot is taken.  A fixed delay is the only
-      // reliable way to keep the 1024px layout in place long enough.
-      //
-      // On desktop, matchMedia fires correctly (active → inactive when the
-      // dialog truly closes), so we use it as an early-exit to avoid leaving
-      // the UI stuck in print mode after the dialog is dismissed.  We only
-      // honour the matchMedia signal once the print media query has gone
-      // active first, and only after a minimum hold that covers mobile
-      // Chrome's capture window.
-      const PRINT_HOLD_MS = 2500;
+      // A fixed delay is the only reliable way to keep the 1024px layout in place long enough.
+
+      const PRINT_HOLD_MS = 250;
       let printHoldExpired = false;
       setTimeout(() => {
         printHoldExpired = true;
       }, PRINT_HOLD_MS);
 
-      // Safety net: always clean up after PRINT_HOLD_MS + 3 s so the UI is
+      // Safety net: always clean up after PRINT_HOLD_MS so the UI is
       // never permanently stuck in print mode.
-      setTimeout(cleanup, PRINT_HOLD_MS + 3000);
+      setTimeout(cleanup, PRINT_HOLD_MS);
 
       const mql = window.matchMedia("print");
       let printWentActive = false;
@@ -147,6 +135,9 @@ export default function Worksheet() {
         </div>
         {worksheetScales.map((scaleRow) => (
           <div key={scaleRow.id}>
+            <div className="remove-button-container no-print">
+              <button onClick={() => removeScaleRow(scaleRow.id)}>X</button>
+            </div>
             <ErrorBoundary
               fallback={
                 <p className="sheet-error">
@@ -163,14 +154,14 @@ export default function Worksheet() {
                 renderMode={printMode ? "print" : undefined}
               />
             </ErrorBoundary>
-            <div className="remove-button-container no-print">
-              <button onClick={() => removeScaleRow(scaleRow.id)}>
-                Remove
-              </button>
-            </div>
           </div>
         ))}
       </section>
+      {worksheetScales.length > 0 && (
+        <button onClick={addScaleRow}>
+          Add Scale ({worksheetScales.length})
+        </button>
+      )}
     </div>
   );
 }

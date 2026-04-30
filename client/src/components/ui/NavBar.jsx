@@ -18,18 +18,20 @@ export default function NavBar() {
   function getViewportScale() {
     const viewport = document.querySelector('meta[name="viewport"]');
     if (!viewport) return 1;
-    const match = viewport.getAttribute("content").match(/initial-scale=([\d.]+)/);
+    const match = viewport
+      .getAttribute("content")
+      .match(/initial-scale=([\d.]+)/);
     return match ? parseFloat(match[1]) : 1;
   }
 
   function toggleNav() {
     if (!toggleMenu) {
-      console.log("Menu opened");
+      //console.log("Menu opened");
       setMobileWidth("100%");
       setMobileDisplay("block");
       setToggleMenu(true);
     } else if (toggleMenu) {
-      console.log("Menu closed");
+      //console.log("Menu closed");
       setMobileWidth("0");
       setMobileDisplay("none");
       setToggleMenu(false);
@@ -59,8 +61,12 @@ export default function NavBar() {
     if (!viewport) return;
     const observer = new MutationObserver(() => {
       setViewportScale(getViewportScale());
+      console.log(`Viewport scale ${viewportScale}`);
     });
-    observer.observe(viewport, { attributes: true, attributeFilter: ["content"] });
+    observer.observe(viewport, {
+      attributes: true,
+      attributeFilter: ["content"],
+    });
     return () => observer.disconnect();
   }, []);
 
@@ -68,18 +74,18 @@ export default function NavBar() {
     <BrowserRouter style={{ display: "contents" }}>
       <nav className="navbar">
         <Logo onClick={toggleNav} toggleMenu={toggleMenu} />
-        {viewportScale < 1 && (
+        {viewportScale < 1 && windowSize < 420 && (
           <span onClick={toggleNav} className="menu">
             ☰
           </span>
         )}
-        {viewportScale < 1 && toggleMenu && (
+        {viewportScale < 1 && windowSize < 420 && toggleMenu && (
           <MobileLinks
             mobileLinksStyle={mobileLinksStyle}
             onClick={toggleNav}
           />
         )}
-        {viewportScale >= 1 && <Links />}
+        {viewportScale >= 1 || (windowSize >= 420 && <Links />)}
       </nav>
 
       <Routes>

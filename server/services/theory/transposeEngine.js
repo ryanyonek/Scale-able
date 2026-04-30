@@ -72,7 +72,7 @@ function parseTranspositionToken(token, tonic) {
     octaveDirection = -1;
   }
 
-  console.log(`Octave direction: ${octaveDirection}`);
+  //console.log(`Octave direction: ${octaveDirection}`);
 
   return {
     transposedKey,
