@@ -74,18 +74,18 @@ export default function NavBar() {
     <BrowserRouter style={{ display: "contents" }}>
       <nav className="navbar">
         <Logo onClick={toggleNav} toggleMenu={toggleMenu} />
-        {viewportScale < 1 && windowSize < 420 && (
+        {windowSize < 430 && (
           <span onClick={toggleNav} className="menu">
             ☰
           </span>
         )}
-        {viewportScale < 1 && windowSize < 420 && toggleMenu && (
+        {windowSize < 430 && toggleMenu && (
           <MobileLinks
             mobileLinksStyle={mobileLinksStyle}
             onClick={toggleNav}
           />
         )}
-        {viewportScale >= 1 || (windowSize >= 420 && <Links />)}
+        {windowSize >= 430 && <Links />}
       </nav>
 
       <Routes>
