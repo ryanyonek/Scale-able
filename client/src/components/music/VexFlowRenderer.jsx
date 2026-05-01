@@ -67,7 +67,7 @@ export default function VexFlowRenderer({ scaleData, options, forcedWidth }) {
     // setting the width available for a measure
     if (containerWidth < 880) {
       availableMeasureWidth = containerWidth - STAVE_SIDE_PADDING * 2;
-    } else if (containerWidth >= 880) {
+    } else {
       if (directionMode === "both") {
         availableMeasureWidth = (containerWidth - STAVE_SIDE_PADDING * 2) / 2;
       } else if (

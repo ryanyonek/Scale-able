@@ -61,8 +61,6 @@ export default function VexFlowSheet({
     measureSize,
   } = config;
 
-  const options = config;
-
   // audio controls state
   const { play, stop, audioError, playing } = useToneScaleAudio();
   const [tempo, setTempo] = useState(1);
@@ -75,8 +73,8 @@ export default function VexFlowSheet({
 
   // Fetch scale from server (with module-level cache to avoid redundant
   // network requests when the print section mounts with identical options).
-  const optionsRef = useRef(options);
-  optionsRef.current = options;
+  const optionsRef = useRef(config);
+  optionsRef.current = config;
 
   useEffect(() => {
     async function fetchScale() {
@@ -114,7 +112,7 @@ export default function VexFlowSheet({
     }
 
     fetchScale();
-  }, [options, endpoint]);
+  }, [config, endpoint]);
 
   // From minor, if a non-major tonic is picked from the dropdown, switch to C, vice versa for minor and A
   useEffect(() => {
@@ -287,7 +285,7 @@ export default function VexFlowSheet({
           ) : (
             <VexFlowRenderer
               scaleData={scaleData}
-              options={options}
+              options={config}
               forcedWidth={isPrintMode ? 1024 : undefined}
             />
           )}

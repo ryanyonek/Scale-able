@@ -31,10 +31,7 @@ function parseTranspositionToken(token, tonic) {
 
   let octaveDirection = 0;
 
-  let uppercaseDiatonicOrder = [];
-  diatonicOrder.map((note) => {
-    uppercaseDiatonicOrder.push(note.toUpperCase());
-  });
+  const uppercaseDiatonicOrder = diatonicOrder.map((note) => note.toUpperCase());
 
   //console.log(`Diatonic order: ${uppercaseDiatonicOrder}`);
 
@@ -118,8 +115,6 @@ export function transposeTonic(tonic, keyInput, scale) {
   }
 
   const semitoneClassShift = (12 - transposedKeyIndex) % 12;
-  const octaveShiftSteps = octaveDirection;
-
   const newIndex = (index + semitoneClassShift + 12) % 12;
 
   keys = chromaticFlatKeys;
@@ -171,6 +166,6 @@ export function transposeTonic(tonic, keyInput, scale) {
 
   return {
     newTonic: keys[newIndex],
-    octaveTranspose: octaveShiftSteps,
+    octaveTranspose: octaveDirection,
   };
 }
