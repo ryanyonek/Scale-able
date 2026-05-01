@@ -44,7 +44,7 @@ export function renderScale({ context, scaleData, options }) {
       stave1.setContext(context).draw();
       if (containerWidth > 880) {
         stave1.setEndBarType(Barline.type.SINGLE);
-      } else if (containerWidth <= 880) {
+      } else {
         stave1.setEndBarType(Barline.type.DOUBLE);
       }
       stave1.draw();
@@ -68,7 +68,7 @@ export function renderScale({ context, scaleData, options }) {
             measureWidth,
           );
         }
-      } else if (containerWidth <= 880) {
+      } else {
         if (!firstMeasure?.notes?.length) {
           stave2 = new Stave(
             STAVE_SIDE_PADDING,

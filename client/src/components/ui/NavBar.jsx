@@ -30,7 +30,7 @@ export default function NavBar() {
       setMobileWidth("100%");
       setMobileDisplay("block");
       setToggleMenu(true);
-    } else if (toggleMenu) {
+    } else {
       //console.log("Menu closed");
       setMobileWidth("0");
       setMobileDisplay("none");
